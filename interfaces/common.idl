@@ -1,0 +1,22 @@
+module common {
+
+	enum error_code {
+		SUCCESS,
+		EINVAL,
+		ENOTSUPPORTED
+	};
+
+	enum error_level {
+		DEBUG,
+		INFO,
+		WARNING,
+		NORMAL,
+		CRITICAL
+	};
+
+	struct error {
+		error_code code;
+		error_level level;
+		string description;
+	};
+};

@@ -1,0 +1,22 @@
+#include "common.idl"
+
+module io {
+
+	interface digital {
+		common.error name (out string name);
+		common.error set ();
+		common.error reset ();
+		common.error get (out int value);
+		attribute Int id;
+	};
+
+	interface analog {
+		common.error name (out string name);
+		common.error min (out int min);
+		common.error max (out int max);
+		common.error set (in int value);
+		common.error get (out int value);
+		attribute Integer id;
+	};
+
+};

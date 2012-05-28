@@ -1,0 +1,17 @@
+include common.idl
+include io.idl
+
+module controller {
+
+	common.error digital (out list<io.digial>);
+	common.error analog (out list<io.analog>);
+	common.error device (out list<device.device_base>);
+
+	common.error register (in io.digital);
+	common.error register (in io.analog);
+	common.error register (in device.device_base);
+
+	common.error unregister (in io.digital);
+	common.error unregister (in io.analog);
+	common.error unregister (in device.device_base);
+};

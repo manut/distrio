@@ -1,0 +1,26 @@
+include common.idl
+include io.idl
+
+module device {
+
+	enum function_id {
+		START;
+		STOP;
+	};
+
+	struct function {
+		string description;
+		int value;
+		enum fundtion_id id;
+	};
+
+	interface device {
+		common.error name (out string name);
+		common.error execute (in device.function);
+		common.error functions (out list <device.function>);
+		int id;
+		list <io.analog> analog;
+		list <io.digital> digital;
+	};
+
+};
