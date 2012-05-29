@@ -1,0 +1,49 @@
+DISTRIBUTED-IO
+==============
+Manuel Traut <manut@mecka.net>
+
+distributed-io is a software framework to group and control digital and analog
+inputs and outputs that are distributed on different machines/boards.
+
+The initial idea was to control turnouts / LEDs / servos of a model railroad.
+They are connected to GPIO ports of some embedded Linux boards. The Linux boards
+are connected to each other by a common (W)LAN network.
+
+There is a central component called 'Manager' running on one board. Each I/O
+pin of each board in the system is registered with a common name at the
+'Manager'. A I/O pin can either be 'Digital' or 'Analog'. All registered pins
+can be retrieved from the 'Manager'.
+
+A 'Device' represents a real world object. For example a model railroad turnout.
+It can use several I/O pins from different boards. It gets the I/O pins from the
+'Manager' by a common name. A 'Device' can export 'Functions'; a turnout for
+example 'left()' and 'straight()'. A 'Device' can implement a 'Callback' and
+register it at several 'Analog' or 'Digital' Inputs with a trigger condition.
+The callback is called by the input object, as soon as the trigger matches. The
+'Callback' is called with the triggered input object as a paramter.
+A 'Device' needs to be registered at the 'Manager' with a common name.
+
+A 'Controller' can retrieve a list of all registered 'Devices' from the
+'Manager'. The exported 'Functions' are also iteratable.
+
+The interfaces
+
+* 'Digital'
+* 'Analog'
+* 'Device'
+* 'Manager'
+* 'Controller'
+
+are defined in CORBA IDL.
+
+The 'Digital' and 'Analog' interface needs to be implemented if new hardware
+should be supported.
+
+The 'Device' interface needs to be implemented for each logical/complex device
+that should be controllable by the distributed-io framework.
+
+The 'Manager' interface needs to be implemented once and can be reused in each
+distributed-io system.
+
+The 'Controller' interface is the user interface. It can for example host a
+webinterface or mobile application.
