@@ -1,12 +1,15 @@
-module common {
+#ifndef DISTIO_COMMON_IDL
+#define DISTIO_COMMON_IDL
 
-	enum error_code {
+module Common {
+
+	enum Error_code {
 		SUCCESS,
 		EINVAL,
 		ENOTSUPPORTED
 	};
 
-	enum error_level {
+	enum Error_level {
 		DEBUG,
 		INFO,
 		WARNING,
@@ -14,9 +17,19 @@ module common {
 		CRITICAL
 	};
 
-	struct error {
-		error_code code;
-		error_level level;
+	struct Error_timestamp {
+		longlong seconds;
+		long nanoseconds;
+	};
+
+	struct Error {
+		Error_code code;
+		Error_level level;
+		Error_timestamp time;
+		long module_id;
 		string description;
 	};
+
 };
+
+#endif

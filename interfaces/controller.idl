@@ -1,17 +1,24 @@
-include common.idl
-include io.idl
+#ifndef DISTIO_CONTROLLER_IDL
+#define DISTIO_CONTROLLER_IDL
 
-module controller {
+#include "common.idl"
+#include "io.idl"
 
-	common.error digital (out list<io.digial>);
-	common.error analog (out list<io.analog>);
-	common.error device (out list<device.device_base>);
+module Controller {
 
-	common.error register (in io.digital);
-	common.error register (in io.analog);
-	common.error register (in device.device_base);
+	interface Manager {
+		Common::Error digital (out IO::Digital_list io_list);
+		Common::Error analog (out IO::Analog_list io_list);
+		Common::Error device (out IO::Device_list dev_list);
+		Common::Error register_io_digital (in IO::Analog io_ana);
+		Common::Error register_io_analog (in IO::Digital io_dig);
+		Common::Error register_io_device (in IO::Device io_dev);
+		Common::Error unregister_io_digital (in IO::Digital io_dig);
+		Common::Error unregister_io_analog (in IO::Analog io_ana);
+		Common::Error unregister_io_device (in IO::Device io_dev);
+		void log_error (in Common::Error error);
+	};
 
-	common.error unregister (in io.digital);
-	common.error unregister (in io.analog);
-	common.error unregister (in device.device_base);
 };
+
+#endif

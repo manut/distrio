@@ -1,22 +1,72 @@
+#ifndef DISTIO_IO_IDL
+#define DISTIO_IO_IDL
+
 #include "common.idl"
 
-module io {
+module IO {
 
-	interface digital {
-		common.error name (out string name);
-		common.error set ();
-		common.error reset ();
-		common.error get (out int value);
-		attribute Int id;
+	interface Device;
+
+	enum Digital_trigger {
+		TRIGGER_EDGE,
+		TRIGGER_RISING_EDGE,
+		TRIGGER_FALLING_EDGE
 	};
 
-	interface analog {
-		common.error name (out string name);
-		common.error min (out int min);
-		common.error max (out int max);
-		common.error set (in int value);
-		common.error get (out int value);
-		attribute Integer id;
+	interface Digital {
+		Common::Error name (out string name);
+		Common::Error set ();
+		Common::Error reset ();
+		Common::Error get (out long value);
+		Common::Error register_callback (in Device dev, in Digital_trigger trigger);
+		attribute long id;
 	};
+
+	typedef sequence<Digital> Digital_list;
+
+	struct Analog_trigger {
+		long last_value;
+		long jitter;
+	};
+
+	interface Analog {
+		Common::Error name (out string name);
+		Common::Error min (out long min);
+		Common::Error max (out long max);
+		Common::Error set (in long value);
+		Common::Error get (out long value);
+		Common::Error register_callback (in Device dev, in Analog_trigger trigger);
+		attribute long id;
+	};
+
+	typedef sequence<Analog> Analog_list;
+
+	enum Dev_function_id {
+		DEV_START,
+		DEV_STOP
+	};
+
+	struct Dev_function {
+		string description;
+		long value;
+		Dev_function_id id;
+	};
+
+	typedef sequence<Dev_function> Dev_function_list;
+
+	interface Device {
+		Common::Error name (out string name);
+		Common::Error execute (in Dev_function func);
+		Common::Error functions (out Dev_function_list funcs);
+		Common::Error callback_digital (in Digital io_dig);
+		Common::Error callback_analog (in Analog io_ana);
+		attribute Analog_list io_ana;
+		attribute Digital_list io_dig;
+		attribute long id;
+	};
+
+	typedef sequence<Device> Device_list;
 
 };
+
+#endif
