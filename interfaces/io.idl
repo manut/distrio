@@ -3,49 +3,77 @@
 
 #include "common.idl"
 
+/**
+ * @brief the implementation of these interfaces are responsible for
+ *	controlling the I/O hardware
+ *
+ * @author Manuel Traut <manut@mecka.net>
+ * @copyright GPLv2
+ */
+
 module IO {
 
 	interface Device;
 
+	/** what should trigger a callback? */
 	enum Digital_trigger {
 		TRIGGER_EDGE,
 		TRIGGER_RISING_EDGE,
 		TRIGGER_FALLING_EDGE
 	};
 
+	/** a digital input or output pin */
 	interface Digital {
+		/** get the name of the hardware which is connected to this pin */
 		Common::Error name (out string name);
+		/** set this pin (fails if it's a digital input) */
 		Common::Error set ();
+		/** reset this pin (fails if it's a digital input) */
 		Common::Error reset ();
+		/** get the value of the pin ( 0 = reset, rest = set */
 		Common::Error get (out long value);
+		/** register a callback that is called if the state of the pin changes */
 		Common::Error register_callback (in Device dev, in Digital_trigger trigger);
+		/** the id is given by Controller::Manager during registration */
 		attribute long id;
 	};
 
 	typedef sequence<Digital> Digital_list;
 
+	/** what should trigger a callback? */
 	struct Analog_trigger {
+		/** used internal to store analog value of the last trigger */
 		long last_value;
+		/** e.g. if current_value > last_value + jitter -> execute callback */
 		long jitter;
 	};
 
+	/** an analog input or output pin */
 	interface Analog {
+		/** name of the hardware which is connected to the pin */
 		Common::Error name (out string name);
+		/** minimum allowed value */
 		Common::Error min (out long min);
+		/** maximum allowd value */
 		Common::Error max (out long max);
+		/** set new value (may fail if out of range or pin is an input) */
 		Common::Error set (in long value);
+		/** get analog value of the pin */
 		Common::Error get (out long value);
+		/** register a callback that is called if the trigger matches */
 		Common::Error register_callback (in Device dev, in Analog_trigger trigger);
 		attribute long id;
 	};
 
 	typedef sequence<Analog> Analog_list;
 
+	/** list of functions of all devices - new ones can be added if needed */
 	enum Dev_function_id {
 		DEV_START,
 		DEV_STOP
 	};
 
+	/** definition to control the device, e.g. start or stop it */
 	struct Dev_function {
 		string description;
 		long value;
@@ -54,14 +82,25 @@ module IO {
 
 	typedef sequence<Dev_function> Dev_function_list;
 
+	/** a device could have several io's and can export functions which can be
+	 *   controlled by a HID device or GUI
+	 */
 	interface Device {
+		/** name of the device */
 		Common::Error name (out string name);
+		/** to execute a device specific function pass the Dev_function descriotion
+		 *		(retrived by (functions ()) as parameter
+		 */
 		Common::Error execute (in Dev_function func);
+		/** returns all device specific function descriptions */
 		Common::Error functions (out Dev_function_list funcs);
+		/** called by the Digital object if this object is registered as a
+		 *		callback and the trigger hits */
 		Common::Error callback_digital (in Digital io_dig);
+		/** called by the Digital object if this object is registered as a
+		 *		callback and the trigger hits */
 		Common::Error callback_analog (in Analog io_ana);
-		attribute Analog_list io_ana;
-		attribute Digital_list io_dig;
+		/** ID is given by Controller::Manager during registration */
 		attribute long id;
 	};
 

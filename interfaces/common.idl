@@ -1,14 +1,29 @@
 #ifndef DISTIO_COMMON_IDL
 #define DISTIO_COMMON_IDL
 
+/**
+ * @brief shared between different modules
+ *
+ * - definitions for error handling
+ *
+ * @author Manuel Traut <manut@mecka.net>
+ * @copyright GPLv2
+ *
+ */
 module Common {
 
+/**
+ * @brief kind of error
+ */
 	enum Error_code {
 		SUCCESS,
 		EINVAL,
 		ENOTSUPPORTED
 	};
 
+/**
+ * @brief used for filtering and classification
+ */
 	enum Error_level {
 		DEBUG,
 		INFO,
@@ -17,16 +32,25 @@ module Common {
 		CRITICAL
 	};
 
+/**
+ * @brief describes when the error was detected
+ *  (it's helpful to sync all boards with ntp)
+ */
 	struct Error_timestamp {
 		longlong seconds;
 		long nanoseconds;
 	};
 
+/**
+ * @brief description of an error
+ */
 	struct Error {
 		Error_code code;
 		Error_level level;
 		Error_timestamp time;
+		/** id of the digital/analog IO or the IO device */
 		long module_id;
+		/** a human readable description which can be displayed in GUIs */
 		string description;
 	};
 
