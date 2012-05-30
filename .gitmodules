@@ -4,3 +4,6 @@
 [submodule "deps/MPC"]
 	path = deps/MPC
 	url = git://gitorious.org/doc/mpc.git
+[submodule "deps/TAO"]
+	path = deps/TAO
+	url = git://gitorious.org/doc/tao.git
