@@ -1,0 +1,14 @@
+COMPILE DISTRIBUTED-IO
+======================
+Manuel Traut <manut@mecka.net>
+
+MPC/ACE/TAO
+-----------
+The TAO CORBA framework is used by the distributed-io server. It depends on the
+MakeProjectCreator (MPC) and on ACE. To build these components from source
+do the following steps:
+
+	1) git submodule init
+	2) git submodule update
+	3) cd deps/ace
+	4) 
