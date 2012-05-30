@@ -1,0 +1,6 @@
+[submodule "deps/acetao"]
+	path = deps/acetao
+	url = git://gitorious.org/doc/ace.git
+[submodule "deps/MPC"]
+	path = deps/MPC
+	url = git://gitorious.org/doc/mpc.git
