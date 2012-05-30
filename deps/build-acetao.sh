@@ -9,6 +9,7 @@ LD_LIBRARY_PATH=$ACE_ROOT/lib:$LD_LIBRARY_PATH
 
 export ACE_ROOT=$ACE_ROOT
 export TAO_ROOT=$TAO_ROOT
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 
 echo '#include "ace/config-linux.h"' > ace/config.h
 echo include $ACE_ROOT/include/makeinclude/platform_linux.GNU > \
@@ -24,10 +25,15 @@ unlink TAO
 ln -s ../TAO TAO
 TAO_ROOT=`pwd`/TAO
 
-echo ACE: $ACE_ROOT    TAO: $TAO_ROOT
+echo ACE: $ACE_ROOT
+echo TAO: $TAO_ROOT
 
-$ACE_ROOT/bin/mwc.pl -type gnuace TAO/TAO_ACE.mwc
+cd TAO
+$ACE_ROOT/bin/mwc.pl -type gnuace TAO_ACE.mwc
+cd -
 make -j9
+sudo ACE_ROOT=$ACE_ROOT TAO_ROOT=$TAO_ROOT make install
 cd TAO
 $ACE_ROOT/bin/mwc.pl -type gnuace TAO/TAO.mwc
 make -j9
+sudo ACE_ROOT=$ACE_ROOT TAO_ROOT=$TAO_ROOT make install
