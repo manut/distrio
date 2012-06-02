@@ -17,19 +17,19 @@ module Distrio {
  */
 	enum Error_code {
 		SUCCESS,
-		EINVAL,
-		ENOTSUPPORTED
+		E_INVAL,
+		E_NOTSUPPORTED
 	};
 
 /**
  * @brief used for filtering and classification
  */
 	enum Error_level {
-		DEBUG,
-		INFO,
-		WARNING,
-		NORMAL,
-		CRITICAL
+		L_DEBUG,
+		L_INFO,
+		L_WARNING,
+		L_NORMAL,
+		L_CRITICAL
 	};
 
 /**

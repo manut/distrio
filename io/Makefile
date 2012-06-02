@@ -2,14 +2,16 @@ CC := $(CROSS_COMPILE)gcc
 CXX := $(CROSS_COMPILE)g++
 LD := $(CROSS_COMPILE)g++
 
-CFLAGS += -fPIC
+DISTRIO_COMMON := ../common
+
+CFLAGS += -fPIC -I$(DISTRIO_COMMON)
 CXXFLAGS += $(CFLAGS)
 
 TAO_IDL := tao_idl
 
 DESTDIR := /usr
 
-COMPONENT = distrio_common
+COMPONENT = distrio_io
 LIB = lib$(COMPONENT).so
 OBJ = $(COMPONENT)C.o $(COMPONENT).o $(COMPONENT)S.o
 

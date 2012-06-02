@@ -28,7 +28,7 @@
 // TAO_IDL - Generated from
 // be/be_codegen.cpp:1673
 
-#include "managerI.h"
+#include "distrio_managerI.h"
 
 // Implementation skeleton constructor
 Distrio_Manager_i::Distrio_Manager_i (void)
@@ -100,3 +100,7 @@ void Distrio_Manager_i::log_error (
   // Add your implementation here
 }
 
+int main (int argc, char **argv)
+{
+	return 0;
+}

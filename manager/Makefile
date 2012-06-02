@@ -2,26 +2,36 @@ CC := $(CROSS_COMPILE)gcc
 CXX := $(CROSS_COMPILE)g++
 LD := $(CROSS_COMPILE)g++
 
+DISTRIO_COMMON := ../common
+DISTRIO_IO := ../io
+
+LDFLAGS += -L$(DISTRIO_COMMON) -ldistrio_common -L$(DISTRIO_IO) -ldistrio_io \
+	-lACE -lTAO -lTAO_AnyTypeCode -lTAO_PortableServer
+CFLAGS += -fPIC -I$(DISTRIO_COMMON) -I$(DISTRIO_IO)
+CXXFLAGS += $(CFLAGS)
+
 TAO_IDL := tao_idl
 
 DESTDIR := /usr
 
-EXEC = distrio-manager
-OBJ = managerC.o managerS.o manager.o
-IDL_CLEANFILES = managerC.cpp managerC.h managerI.h managerS.cpp managerS.h \
-	managerC.inl
+COMPONENT = distrio_manager
+EXEC = $(COMPONENT)
+OBJ = $(COMPONENT)C.o $(COMPONENT)S.o $(COMPONENT).o
+IDL_CLEANFILES = $(COMPONENT)C.cpp $(COMPONENT)C.h $(COMPONENT)I.h \
+	$(COMPONENT)S.cpp $(COMPONENT)S.h $(COMPONENT)C.inl
 
-all: idl $(OBJ)
-	$(LD) -o $(EXEC) $(OBJ)
+all: $(OBJ)
+	$(LD) $(LDFLAGS) -o $(EXEC) $(OBJ)
 
 idl:
-	$(TAO_IDL) -GI -I../interfaces ../interfaces/manager.idl
-	rm -f managerI.cpp
+	$(TAO_IDL) -GI -I../interfaces ../interfaces/$(COMPONENT).idl
+	rm -f $(COMPONENT)I.cpp
 
 idl_clean:
 	rm -f $(IDL_CLEANFILES)
 
 clean: idl_clean
+	rm *.o
 	rm -f $(EXEC)
 
 install: all

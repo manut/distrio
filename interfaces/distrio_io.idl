@@ -1,7 +1,7 @@
 #ifndef DISTRIO_IO_IDL
 #define DISTRIO_IO_IDL
 
-#include "common.idl"
+#include "distrio_common.idl"
 
 /**
  * @brief the implementation of these interfaces are responsible for

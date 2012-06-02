@@ -28,5 +28,5 @@
 // TAO_IDL - Generated from
 // be/be_codegen.cpp:1673
 
-#include "commonI.h"
+#include "distrio_commonI.h"
 

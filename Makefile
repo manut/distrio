@@ -1,6 +1,7 @@
-MAKE_DIRECTORIES = common manager
+MAKE_DIRECTORIES = common io manager
 
 .PHONY: all
+idl: $(MAKE_DIRECTORIES)
 all: $(MAKE_DIRECTORIES)
 
 .PHONY: $(MAKE_DIRECTORIES)

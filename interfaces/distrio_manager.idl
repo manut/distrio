@@ -1,8 +1,8 @@
 #ifndef DISTRDistrio_CONTROLLER_IDL
 #define DISTRDistrio_CONTROLLER_IDL
 
-#include "common.idl"
-#include "io.idl"
+#include "distrio_common.idl"
+#include "distrio_io.idl"
 
 /**
  * @brief logical view of IO's and Devices (not HW specific)
