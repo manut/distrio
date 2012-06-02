@@ -1,2 +1,11 @@
 doc/latex
 doc/html
+*.o
+*.so
+*S.cpp
+*S.h
+*C.cpp
+*C.h
+*C.inl
+*I.h
+manager/distrio_manager
