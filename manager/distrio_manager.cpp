@@ -30,6 +30,10 @@
 
 #include "distrio_managerI.h"
 
+#include <orbsvcs/CosNamingC.h>
+
+#include <iostream>
+
 // Implementation skeleton constructor
 Distrio_Manager_i::Distrio_Manager_i (void)
 {
@@ -100,7 +104,54 @@ void Distrio_Manager_i::log_error (
   // Add your implementation here
 }
 
-int main (int argc, char **argv)
+ACE_TMAIN (int argc, ACE_TCHAR *argv[])
 {
-	return 0;
+	std::cout << __FILE__ << " build " << __DATE__ << " " << __TIME__ <<std::endl;
+
+	int ret = 0;
+	CORBA::ORB_var orb;
+	CORBA::Object_var distrio_manager_obj, tmp;
+	PortableServer::POA_var poa;
+	PortableServer::POAManager_var poa_mgr;
+	CosNaming::NamingContext_var nc;
+	CosNaming::Name name;
+
+	Distrio_Manager_i *distrio_manager;
+	PortableServer::ObjectId_var distrio_manager_oid;
+
+	distrio_manager = new Distrio_Manager_i ();
+
+	try {
+		orb = CORBA::ORB_init (argc, argv);
+		tmp = orb->resolve_initial_references ("RootPOA");
+		poa = PortableServer::POA::_narrow (tmp.in ());
+		distrio_manager_oid = poa->activate_object (distrio_manager);
+		distrio_manager_obj = distrio_manager->_this ();
+
+		CORBA::String_var ior (orb->object_to_string (distrio_manager_obj.in ()));
+		tmp = orb->resolve_initial_references ("NameService");
+		name.length (2);
+		name[0].id = CORBA::string_dup ("distrio");
+		name[1].id = CORBA::string_dup ("manager");
+		nc = CosNaming::NamingContext::_narrow (tmp.in ());
+		nc->rebind (name, distrio_manager_obj.in ());
+
+		poa_mgr = poa->the_POAManager ();
+		poa_mgr->activate ();
+
+		orb->run ();
+		orb->destroy ();
+	} catch (CORBA::SystemException &e) {
+		std::cerr << "CORBA initialization failed: " << e << std::endl;
+		ret = -EINVAL;
+		goto out;
+	} catch(CORBA::Exception &e) {
+		std::cerr << "CORBA initialization failed: " << e << std::endl;
+		ret = -EINVAL;
+		goto out;
+	}
+
+out:
+	free (distrio_manager);
+	return ret;
 }
