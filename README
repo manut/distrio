@@ -1,8 +1,8 @@
-DISTRIBUTED-IO
-==============
+DISTRIO
+=======
 Manuel Traut <manut@mecka.net>
 
-distributed-io is a software framework to group and control digital and analog
+distrio is a software framework to group and control digital and analog
 inputs and outputs that are distributed on different machines/boards.
 
 The initial idea was to control turnouts / LEDs / servos of a model railroad.
@@ -40,10 +40,10 @@ The 'Digital' and 'Analog' interface needs to be implemented if new hardware
 should be supported.
 
 The 'Device' interface needs to be implemented for each logical/complex device
-that should be controllable by the distributed-io framework.
+that should be controllable by the distrio framework.
 
 The 'Manager' interface needs to be implemented once and can be reused in each
-distributed-io system.
+distrio system.
 
 The 'Controller' interface is the user interface. It can for example host a
 webinterface or mobile application.

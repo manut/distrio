@@ -1,5 +1,5 @@
-#ifndef DISTIO_IO_IDL
-#define DISTIO_IO_IDL
+#ifndef DISTRIO_IO_IDL
+#define DISTRIO_IO_IDL
 
 #include "common.idl"
 

@@ -1,5 +1,5 @@
-#ifndef DISTIO_CONTROLLER_IDL
-#define DISTIO_CONTROLLER_IDL
+#ifndef DISTRIO_CONTROLLER_IDL
+#define DISTRIO_CONTROLLER_IDL
 
 #include "common.idl"
 #include "io.idl"

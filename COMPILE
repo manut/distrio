@@ -1,10 +1,10 @@
-COMPILE DISTRIBUTED-IO
-======================
+COMPILE DISTRIO
+===============
 Manuel Traut <manut@mecka.net>
 
 MPC/ACE/TAO
 -----------
-The TAO CORBA framework is used by the distributed-io Manager.
+The TAO CORBA framework is used by the distrio Manager.
 It depends on the MakeProjectCreator (MPC) and on ACE.
 
 You should use the ACE/TAO packages provided by your distribution. If your

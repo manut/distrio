@@ -1,5 +1,5 @@
-#ifndef DISTIO_COMMON_IDL
-#define DISTIO_COMMON_IDL
+#ifndef DISTRIO_COMMON_IDL
+#define DISTRIO_COMMON_IDL
 
 /**
  * @brief shared between different modules
