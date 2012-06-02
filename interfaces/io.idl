@@ -11,7 +11,7 @@
  * @copyright GPLv2
  */
 
-module IO {
+module Distrio {
 
 	interface Device;
 
@@ -25,15 +25,15 @@ module IO {
 	/** a digital input or output pin */
 	interface Digital {
 		/** get the name of the hardware which is connected to this pin */
-		Common::Error name (out string name);
+		Distrio::Error name (out string name);
 		/** set this pin (fails if it's a digital input) */
-		Common::Error set ();
+		Distrio::Error set ();
 		/** reset this pin (fails if it's a digital input) */
-		Common::Error reset ();
+		Distrio::Error reset ();
 		/** get the value of the pin ( 0 = reset, rest = set */
-		Common::Error get (out long value);
+		Distrio::Error get (out long value);
 		/** register a callback that is called if the state of the pin changes */
-		Common::Error register_callback (in Device dev, in Digital_trigger trigger);
+		Distrio::Error register_callback (in Device dev, in Digital_trigger trigger);
 		/** the id is given by Controller::Manager during registration */
 		attribute long id;
 	};
@@ -51,17 +51,17 @@ module IO {
 	/** an analog input or output pin */
 	interface Analog {
 		/** name of the hardware which is connected to the pin */
-		Common::Error name (out string name);
+		Distrio::Error name (out string name);
 		/** minimum allowed value */
-		Common::Error min (out long min);
+		Distrio::Error min (out long min);
 		/** maximum allowd value */
-		Common::Error max (out long max);
+		Distrio::Error max (out long max);
 		/** set new value (may fail if out of range or pin is an input) */
-		Common::Error set (in long value);
+		Distrio::Error set (in long value);
 		/** get analog value of the pin */
-		Common::Error get (out long value);
+		Distrio::Error get (out long value);
 		/** register a callback that is called if the trigger matches */
-		Common::Error register_callback (in Device dev, in Analog_trigger trigger);
+		Distrio::Error register_callback (in Device dev, in Analog_trigger trigger);
 		attribute long id;
 	};
 
@@ -87,19 +87,19 @@ module IO {
 	 */
 	interface Device {
 		/** name of the device */
-		Common::Error name (out string name);
+		Distrio::Error name (out string name);
 		/** to execute a device specific function pass the Dev_function descriotion
 		 *		(retrived by (functions ()) as parameter
 		 */
-		Common::Error execute (in Dev_function func);
+		Distrio::Error execute (in Dev_function func);
 		/** returns all device specific function descriptions */
-		Common::Error functions (out Dev_function_list funcs);
+		Distrio::Error functions (out Dev_function_list funcs);
 		/** called by the Digital object if this object is registered as a
 		 *		callback and the trigger hits */
-		Common::Error callback_digital (in Digital io_dig);
+		Distrio::Error callback_digital (in Digital io_dig);
 		/** called by the Digital object if this object is registered as a
 		 *		callback and the trigger hits */
-		Common::Error callback_analog (in Analog io_ana);
+		Distrio::Error callback_analog (in Analog io_ana);
 		/** ID is given by Controller::Manager during registration */
 		attribute long id;
 	};

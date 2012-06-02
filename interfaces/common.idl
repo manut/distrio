@@ -10,7 +10,7 @@
  * @copyright GPLv2
  *
  */
-module Common {
+module Distrio {
 
 /**
  * @brief kind of error
@@ -37,7 +37,7 @@ module Common {
  *  (it's helpful to sync all boards with ntp)
  */
 	struct Error_timestamp {
-		longlong seconds;
+		long seconds;
 		long nanoseconds;
 	};
 

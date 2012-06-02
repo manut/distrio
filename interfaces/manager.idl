@@ -1,0 +1,51 @@
+#ifndef DISTRDistrio_CONTROLLER_IDL
+#define DISTRDistrio_CONTROLLER_IDL
+
+#include "common.idl"
+#include "io.idl"
+
+/**
+ * @brief logical view of IO's and Devices (not HW specific)
+ *
+ * @author Manuel Traut <manut@mecka.net>
+ * @copyright GPLv2
+ */
+
+module Distrio {
+
+/**
+ * @brief manage io/device lists, error handling
+ *
+ * - all modules need to register their IO's and devices
+ * - registered IO's and devices can be obtained
+ */
+	interface Manager {
+		/** returns list of registered digital IO's */
+		Distrio::Error digital (out Distrio::Digital_list io_list);
+		/** returns list of registered analog IO's */
+		Distrio::Error analog (out Distrio::Analog_list io_list);
+		/** returns list of registered devices */
+		Distrio::Error device (out Distrio::Device_list dev_list);
+		/** register a digital io */
+		Distrio::Error register_io_digital (in Distrio::Analog io_ana);
+		/** register a analog io */
+		Distrio::Error register_io_analog (in Distrio::Digital io_dig);
+		/** register a device */
+		Distrio::Error register_io_device (in Distrio::Device io_dev);
+		/** unregister a digital io */
+		Distrio::Error unregister_io_digital (in Distrio::Digital io_dig);
+		/** unregister a analog io */
+		Distrio::Error unregister_io_analog (in Distrio::Analog io_ana);
+		/** unregister a device */
+		Distrio::Error unregister_io_device (in Distrio::Device io_dev);
+		/** used by modules to send errors to a central point
+		 *   The implementation of this function could:
+		 *    - thispatch errors to a GUI
+		 *    - log the errors e.g. with log4*
+		 */
+		void log_error (in Distrio::Error error);
+	};
+
+};
+
+#endif
