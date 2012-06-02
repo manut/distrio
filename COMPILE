@@ -14,3 +14,20 @@ distribution doesn't have packaged ACE/TAO you can build it by this steps:
 	2) git submodule update
 	3) cd deps
 	4) ./build-acetao.sh
+
+DISTRIO
+-------
+Generate corba interface code:
+
+	1) make idl
+
+Build libs and binaries:
+
+	2) make
+
+These steps can also be done in the following directories, to build a single
+distrio component:
+
+	- common
+	- io
+	- manager
