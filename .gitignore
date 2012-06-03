@@ -10,3 +10,4 @@ doc/html
 *I.h
 manager/bin/distrio_manager
 generic_gpio/distrio_generic_gpio
+devices/simple_dev/distrio_simple_dev
