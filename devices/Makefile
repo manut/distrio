@@ -1,4 +1,4 @@
-MAKE_DIRECTORIES = common io manager generic_gpio devices
+MAKE_DIRECTORIES = simple_dev
 
 .PHONY: all
 idl: $(MAKE_DIRECTORIES)

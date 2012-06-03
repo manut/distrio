@@ -96,6 +96,46 @@ int register_digital (std::string _name, Distrio_Digital_i *digital)
 	return 0;
 }
 
+int register_device (std::string _name, Distrio_Device_i *dev)
+{
+	CosNaming::Name name;
+	CORBA::Object_var obj, manager_obj;
+	PortableServer::ObjectId_var oid;
+	Distrio::Device_ptr ptr;
+	Distrio::Error *e;
+
+	if (ref.init != ORB_RUNNING) {
+		std::cerr << "corba not initialized" << std::endl;
+		return -1;
+	}
+
+	try {
+		oid = ref.poa->activate_object (dev);
+		obj = dev->_this ();
+		name.length (1);
+		name[0].id = CORBA::string_dup (_name.c_str ());
+		name[0].kind = CORBA::string_dup ("devices");
+		ref.nc->rebind (name, obj.in ());
+	} catch (CORBA::Exception &e) {
+		std::cerr << "CORBA bind digital io at naming service failed: "
+			<< e << std::endl;
+		return -1;
+	}
+
+	try {
+		ptr = Distrio::Device::_narrow (obj);
+		e = ref.manager->register_io_device (ptr);
+		std::cout << e->description << std::endl;
+		free (e);
+	} catch (CORBA::Exception &_e) {
+		std::cerr << "CORBA register device at distrio manager failed: "
+			<< _e << std::endl;
+		return -1;
+	}
+
+	return 0;
+}
+
 pthread_t orb_thread;
 
 void *orb_runner (void *args)
