@@ -8,7 +8,7 @@
  * @licence GPLv2
  */
 
-#include "distrio_managerI.h"
+#include "distrio_manager.h"
 
 #include <orbsvcs/CosNamingC.h>
 
@@ -27,37 +27,45 @@ Distrio_Manager_i::~Distrio_Manager_i (void)
 ::Distrio::Error * Distrio_Manager_i::digital (
   ::Distrio::Digital_list_out io_list)
 {
-  // Add your implementation here
+	io_list = &digital_list;
 }
 
 ::Distrio::Error * Distrio_Manager_i::analog (
   ::Distrio::Analog_list_out io_list)
 {
-  // Add your implementation here
+	io_list = &analog_list;
 }
 
 ::Distrio::Error * Distrio_Manager_i::device (
   ::Distrio::Device_list_out dev_list)
 {
-  // Add your implementation here
+	dev_list = &device_list;
 }
 
+/* TODO: think about locking!!! */
+
 ::Distrio::Error * Distrio_Manager_i::register_io_digital (
-  ::Distrio::Analog_ptr io_ana)
+  ::Distrio::Digital_ptr & io_digi)
 {
-  // Add your implementation here
+	io_digi->id (new_id ());
+	digital_list.length (digital_list.length () + 1);
+	digital_list [digital_list.length () - 1] = io_digi;
 }
 
 ::Distrio::Error * Distrio_Manager_i::register_io_analog (
-  ::Distrio::Digital_ptr io_dig)
+  ::Distrio::Analog_ptr & io_ana)
 {
-  // Add your implementation here
+	io_ana->id (new_id ());
+	analog_list.length (digital_list.length () + 1);
+	analog_list [analog_list.length () - 1] = io_ana;
 }
 
 ::Distrio::Error * Distrio_Manager_i::register_io_device (
-  ::Distrio::Device_ptr io_dev)
+  ::Distrio::Device_ptr & io_dev)
 {
-  // Add your implementation here
+	io_dev->id (new_id ());
+	device_list.length (device_list.length () + 1);
+	device_list [device_list.length () - 1] = io_dev;
 }
 
 ::Distrio::Error * Distrio_Manager_i::unregister_io_digital (

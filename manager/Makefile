@@ -25,13 +25,13 @@ all: $(OBJ)
 
 idl:
 	$(TAO_IDL) -GI -I../interfaces ../interfaces/$(COMPONENT).idl
-	rm -f $(COMPONENT)I.cpp
+	rm -f $(COMPONENT)I.cpp $(COMPONENT)I.h
 
 idl_clean:
 	rm -f $(IDL_CLEANFILES)
 
 clean: idl_clean
-	rm *.o
+	rm -f *.o
 	rm -f $(EXEC)
 
 install: all
