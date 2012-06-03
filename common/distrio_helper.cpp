@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-#include "common.h"
+#include "distrio_helper.h"
 
 int init_corba (int argc, char **argv)
 {

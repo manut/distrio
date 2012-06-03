@@ -13,7 +13,7 @@ DESTDIR := /usr
 
 COMPONENT = distrio_common
 LIB = lib$(COMPONENT).so
-OBJ = $(COMPONENT)C.o $(COMPONENT).o $(COMPONENT)S.o common.o
+OBJ = $(COMPONENT)C.o $(COMPONENT).o $(COMPONENT)S.o distrio_helper.o
 
 IDL_CLEANFILES = $(COMPONENT)C.cpp $(COMPONENT)C.inl $(COMPONENT)I.h \
 	$(COMPONENT)S.h $(COMPONENT)C.h $(COMPONENT)S.cpp
