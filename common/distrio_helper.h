@@ -37,6 +37,6 @@ static corba_ref ref = {
 /** initialize corba orb - argc, argv as passed to main() */
 int init_corba (int argc, char **argv);
 /** register a digital io with a common name at the naming service */
-int register_digital (char *_name, Distrio_Digital_i *digital);
+int register_digital (std::string _name, Distrio_Digital_i *digital);
 /** run the orb - function blocks until orb shutdown */
 int run_orb (void);
