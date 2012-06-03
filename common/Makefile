@@ -2,7 +2,9 @@ CC := $(CROSS_COMPILE)gcc
 CXX := $(CROSS_COMPILE)g++
 LD := $(CROSS_COMPILE)g++
 
-CFLAGS += -fPIC
+DISTRIO_IO = ../io
+
+CFLAGS += -fPIC -I. -I$(DISTRIO_IO)
 CXXFLAGS += $(CFLAGS)
 
 TAO_IDL := tao_idl
@@ -11,7 +13,7 @@ DESTDIR := /usr
 
 COMPONENT = distrio_common
 LIB = lib$(COMPONENT).so
-OBJ = $(COMPONENT)C.o $(COMPONENT).o $(COMPONENT)S.o
+OBJ = $(COMPONENT)C.o $(COMPONENT).o $(COMPONENT)S.o common.o
 
 IDL_CLEANFILES = $(COMPONENT)C.cpp $(COMPONENT)C.inl $(COMPONENT)I.h \
 	$(COMPONENT)S.h $(COMPONENT)C.h $(COMPONENT)S.cpp
