@@ -8,4 +8,5 @@ doc/html
 *C.h
 *C.inl
 *I.h
-manager/distrio_manager
+manager/bin/distrio_manager
+generic_gpio/distrio_generic_gpio
