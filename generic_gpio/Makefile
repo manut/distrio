@@ -31,3 +31,6 @@ install: all
 
 uninstall:
 	rm -f $(DESTDIR)/bin/$(EXEC)
+
+idl:
+	/bin/true
