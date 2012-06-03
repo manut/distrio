@@ -35,6 +35,8 @@ int init_corba (int argc, char **argv)
 		goto out;
 	}
 
+	ref.init = 1;
+
 out:
 	return ret;
 }
