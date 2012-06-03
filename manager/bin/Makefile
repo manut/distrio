@@ -6,7 +6,7 @@ DISTRIO_COMMON := ../../common
 DISTRIO_IO := ../../io
 
 LDFLAGS += -L$(DISTRIO_COMMON) -ldistrio_common -L$(DISTRIO_IO) -ldistrio_io \
-	-lACE -lTAO -lTAO_AnyTypeCode -lTAO_CosNaming -lTAO_PortableServer
+	-lrt -lACE -lTAO -lTAO_AnyTypeCode -lTAO_CosNaming -lTAO_PortableServer
 CFLAGS += -fPIC -I$(DISTRIO_COMMON) -I$(DISTRIO_IO)
 CXXFLAGS += $(CFLAGS)
 

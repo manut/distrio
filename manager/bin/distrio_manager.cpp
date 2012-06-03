@@ -10,6 +10,8 @@
 
 #include "distrio_manager.h"
 
+#include <distrio_error.h>
+
 #include <orbsvcs/CosNamingC.h>
 
 #include <iostream>
@@ -47,9 +49,18 @@ Distrio_Manager_i::~Distrio_Manager_i (void)
 ::Distrio::Error * Distrio_Manager_i::register_io_digital (
   ::Distrio::Digital_ptr & io_digi)
 {
-	io_digi->id (new_id ());
+	Distrio::Digital_var dig;
+
+	try {
+		dig = Distrio::Digital::_narrow (io_digi);
+		dig->id (new_id ());
+	} catch (::CORBA::Exception *exc) {
+		std::cerr << "register io failed" << std::endl;
+	}
 	digital_list.length (digital_list.length () + 1);
-	digital_list [digital_list.length () - 1] = io_digi;
+	digital_list [digital_list.length () - 1] = dig;
+
+	return distrio_success ();
 }
 
 ::Distrio::Error * Distrio_Manager_i::register_io_analog (
