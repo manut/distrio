@@ -13,6 +13,8 @@
 #include <distrio_ioC.h>
 #include <distrio_ioS.h>
 
+#include <distrio_managerC.h>
+
 #include <orbsvcs/CosNamingC.h>
 
 /**

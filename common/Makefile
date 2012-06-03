@@ -3,8 +3,9 @@ CXX := $(CROSS_COMPILE)g++
 LD := $(CROSS_COMPILE)g++
 
 DISTRIO_IO = ../io
+DISTRIO_MANAGER = ../manager
 
-CFLAGS += -fPIC -I. -I$(DISTRIO_IO)
+CFLAGS += -fPIC -I. -I$(DISTRIO_IO) -I$(DISTRIO_MANAGER)
 CXXFLAGS += $(CFLAGS)
 
 TAO_IDL := tao_idl

@@ -44,8 +44,10 @@ out:
 int register_digital (char *_name, Distrio_Digital_i *digital)
 {
 	CosNaming::Name name;
-	CORBA::Object_var obj;
+	CORBA::Object_var obj, manager_obj;
 	PortableServer::ObjectId_var oid;
+	Distrio::Manager_var manager;
+	Distrio::Digital_ptr ptr;
 
 	if (!ref.init) {
 		std::cerr << "corba not initialized" << std::endl;
@@ -60,7 +62,21 @@ int register_digital (char *_name, Distrio_Digital_i *digital)
 		name[0].kind = CORBA::string_dup ("digital_io");
 		ref.nc->rebind (name, obj.in ());
 	} catch (CORBA::Exception &e) {
-		std::cerr << "CORBA initialization failed: " << e << std::endl;
+		std::cerr << "CORBA bind digital io at naming service failed: "
+			<< e << std::endl;
+		return -1;
+	}
+
+	try {
+		name[0].id = CORBA::string_dup ("distrio_manager");
+		name[0].kind = CORBA::string_dup ("");
+		manager_obj = ref.nc->resolve (name);
+		manager = Distrio::Manager::_narrow (manager_obj);
+		ptr = Distrio::Digital::_narrow (obj);
+		manager->register_io_digital (ptr);
+	} catch (CORBA::Exception &e) {
+		std::cerr << "CORBA register digital io at distrio manager failed: "
+			<< e << std::endl;
 		return -1;
 	}
 
