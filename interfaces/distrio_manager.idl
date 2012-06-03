@@ -27,11 +27,11 @@ module Distrio {
 		/** returns list of registered devices */
 		Distrio::Error device (out Distrio::Device_list dev_list);
 		/** register a digital io */
-		Distrio::Error register_io_digital (in Distrio::Analog io_ana);
+		Distrio::Error register_io_digital (inout Distrio::Digital io_dig);
 		/** register a analog io */
-		Distrio::Error register_io_analog (in Distrio::Digital io_dig);
+		Distrio::Error register_io_analog (inout Distrio::Analog io_ana);
 		/** register a device */
-		Distrio::Error register_io_device (in Distrio::Device io_dev);
+		Distrio::Error register_io_device (inout Distrio::Device io_dev);
 		/** unregister a digital io */
 		Distrio::Error unregister_io_digital (in Distrio::Digital io_dig);
 		/** unregister a analog io */
