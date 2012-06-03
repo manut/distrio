@@ -43,6 +43,8 @@ static corba_ref ref = {
 int init_corba (int argc, char **argv);
 /** register a digital io with a common name at the naming service */
 int register_digital (std::string _name, Distrio_Digital_i *digital);
+/** lookup a digital io by a common name at the manager */
+Distrio::Digital_ptr lookup_digital (std::string _name);
 /** register a device with a common name at the naming service */
 int register_device (std::string _name, Distrio_Device_i *dev);
 /** run the orb - function blocks until orb shutdown */

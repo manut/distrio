@@ -29,19 +29,26 @@ Distrio_Manager_i::~Distrio_Manager_i (void)
 ::Distrio::Error * Distrio_Manager_i::digital (
   ::Distrio::Digital_list_out io_list)
 {
-	io_list = &digital_list;
+	io_list->length (digital_list.length ());
+
+	for (unsigned int i = 0; i < digital_list.length (); i++)
+		io_list[i] = digital_list[i];
+
+	return distrio_success ();
 }
 
 ::Distrio::Error * Distrio_Manager_i::analog (
   ::Distrio::Analog_list_out io_list)
 {
 	io_list = &analog_list;
+	return distrio_success ();
 }
 
 ::Distrio::Error * Distrio_Manager_i::device (
   ::Distrio::Device_list_out dev_list)
 {
 	dev_list = &device_list;
+	return distrio_success ();
 }
 
 /* TODO: think about locking!!! */
@@ -66,9 +73,18 @@ Distrio_Manager_i::~Distrio_Manager_i (void)
 ::Distrio::Error * Distrio_Manager_i::register_io_analog (
   ::Distrio::Analog_ptr & io_ana)
 {
-	io_ana->id (new_id ());
-	analog_list.length (digital_list.length () + 1);
-	analog_list [analog_list.length () - 1] = io_ana;
+	Distrio::Analog_var analog;
+
+	try {
+		analog = Distrio::Analog::_narrow (io_ana);
+		analog->id (new_id ());
+	} catch (::CORBA::Exception *exc) {
+		std::cerr << "register analog io failed" << std::endl;
+	}
+	analog_list.length (analog_list.length () + 1);
+	analog_list [analog_list.length () - 1] = analog;
+
+	return distrio_success ();
 }
 
 ::Distrio::Error * Distrio_Manager_i::register_io_device (

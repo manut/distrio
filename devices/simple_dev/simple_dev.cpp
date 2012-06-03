@@ -23,6 +23,7 @@ int main (int argc, char **argv)
 {
 	int ret = 0;
 	My_device *dev;
+	Distrio::Digital_ptr digital_io;
 
 	if (init_corba (argc, argv))
 		return -EINVAL;
@@ -38,6 +39,8 @@ int main (int argc, char **argv)
 	}
 
 	std::cout << "registered id: " << dev->id () << std::endl;
+
+	digital_io = lookup_digital ("pin huhu");
 
 out:
 	free (dev);
