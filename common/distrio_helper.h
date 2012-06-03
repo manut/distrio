@@ -17,6 +17,10 @@
 
 #include <orbsvcs/CosNamingC.h>
 
+#define ORB_NOT_INITIALIZED 0
+#define ORB_INIT 1
+#define ORB_RUNNING 2
+
 /**
  * handle to corba objects needed for registration of new objects and running
  *  the ORB
@@ -28,10 +32,11 @@ typedef struct _corba_ref {
 	PortableServer::POA_var poa;
 	PortableServer::POAManager_var poa_mgr;
 	CosNaming::NamingContext_var nc;
+	Distrio::Manager_var manager;
 } corba_ref;
 
 static corba_ref ref = {
-	.init = 0,
+	.init = ORB_NOT_INITIALIZED,
 };
 
 /** initialize corba orb - argc, argv as passed to main() */
