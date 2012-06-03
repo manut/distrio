@@ -34,7 +34,9 @@ module Distrio {
 		Distrio::Error get (out long value);
 		/** register a callback that is called if the state of the pin changes */
 		Distrio::Error register_callback (in Device dev, in Digital_trigger trigger);
-		/** the id is given by Controller::Manager during registration */
+		/** stores a timestamp of the last update of the referenced value */
+		attribute Distrio::Timestamp last_update;
+		/** the id is given by Distrio::Manager during registration */
 		attribute long id;
 	};
 
@@ -62,6 +64,9 @@ module Distrio {
 		Distrio::Error get (out long value);
 		/** register a callback that is called if the trigger matches */
 		Distrio::Error register_callback (in Device dev, in Analog_trigger trigger);
+		/** stores a timestamp of the last update of the referenced value */
+		attribute Distrio::Timestamp last_update;
+		/** the id is given by Distrio::Manager during registration */
 		attribute long id;
 	};
 
@@ -100,7 +105,7 @@ module Distrio {
 		/** called by the Digital object if this object is registered as a
 		 *		callback and the trigger hits */
 		Distrio::Error callback_analog (in Analog io_ana);
-		/** ID is given by Controller::Manager during registration */
+		/** ID is given by Distrio::Manager during registration */
 		attribute long id;
 	};
 

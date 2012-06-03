@@ -36,7 +36,7 @@ module Distrio {
  * @brief describes when the error was detected
  *  (it's helpful to sync all boards with ntp)
  */
-	struct Error_timestamp {
+	struct Timestamp {
 		long seconds;
 		long nanoseconds;
 	};
@@ -47,7 +47,7 @@ module Distrio {
 	struct Error {
 		Error_code code;
 		Error_level level;
-		Error_timestamp time;
+		Timestamp time;
 		/** id of the digital/analog IO or the IO device */
 		long module_id;
 		/** a human readable description which can be displayed in GUIs */

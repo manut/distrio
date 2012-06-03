@@ -71,6 +71,18 @@ Distrio_Digital_i::~Distrio_Digital_i (void)
   // Add your implementation here
 }
 
+::Distrio::Timestamp Distrio_Digital_i::last_update (
+  void)
+{
+  // Add your implementation here
+}
+
+void Distrio_Digital_i::last_update (
+  const ::Distrio::Timestamp & last_update)
+{
+  // Add your implementation here
+}
+
 ::CORBA::Long Distrio_Digital_i::id (
   void)
 {
@@ -126,6 +138,18 @@ Distrio_Analog_i::~Distrio_Analog_i (void)
 ::Distrio::Error * Distrio_Analog_i::register_callback (
   ::Distrio::Device_ptr dev,
   const ::Distrio::Analog_trigger & trigger)
+{
+  // Add your implementation here
+}
+
+::Distrio::Timestamp Distrio_Analog_i::last_update (
+  void)
+{
+  // Add your implementation here
+}
+
+void Distrio_Analog_i::last_update (
+  const ::Distrio::Timestamp & last_update)
 {
   // Add your implementation here
 }
