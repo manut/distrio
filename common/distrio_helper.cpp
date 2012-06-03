@@ -55,10 +55,9 @@ int register_digital (char *_name, Distrio_Digital_i *digital)
 	try {
 		oid = ref.poa->activate_object (digital);
 		obj = digital->_this ();
-
-		/* TODO: find out how to build a tree @ the nameservice "distrio/manager" */
 		name.length (1);
 		name[0].id = CORBA::string_dup (_name);
+		name[0].kind = CORBA::string_dup ("digital_io");
 		ref.nc->rebind (name, obj.in ());
 	} catch (CORBA::Exception &e) {
 		std::cerr << "CORBA initialization failed: " << e << std::endl;
