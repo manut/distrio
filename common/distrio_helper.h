@@ -59,8 +59,8 @@ void get_digital_list (Distrio::Digital_list_var *dig_list);
 void get_analog_list (Distrio::Analog_list_var *ana_list);
 
 /** lookup a digital io by a common name at the manager */
-void lookup_digital (std::string _name, Distrio::Digital_list_var dig_list,
+int lookup_digital (std::string _name, Distrio::Digital_list_var dig_list,
 	Distrio::Digital **ptr);
 /** lookup a analog io by a common name at the manager */
-void lookup_analog (std::string _name, Distrio::Analog_list_var ana_list,
+int lookup_analog (std::string _name, Distrio::Analog_list_var ana_list,
 	Distrio::Analog **ptr);

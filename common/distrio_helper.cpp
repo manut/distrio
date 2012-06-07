@@ -258,53 +258,54 @@ void get_digital_list (Distrio::Digital_list_var *dig_list)
 	}
 }
 
-void lookup_analog (std::string _name, Distrio::Analog_list_var ana_list,
+int lookup_analog (std::string _name, Distrio::Analog_list_var ana_list,
 	Distrio::Analog **ptr)
 {
 	if (ref.init != ORB_RUNNING) {
 		std::cerr << "corba not initialized" << std::endl;
-		return;
+		return -EINVAL;
 	}
 
 	for (unsigned int i = 0; i < ana_list->length (); i++) {
 		::CORBA::String_var name;
 		Distrio::Error *e;
-
 		try {
 			e = ana_list[i]->name (name);
 			if (!::CORBA::is_nil (e))
 				free (e);
+			if (! _name.compare (name.in ())) {
+				*ptr = ana_list[i];
+				return 0;
+			}
 		} catch (::CORBA::Exception &ex) {
 			std::cerr << "get name of analog io failed\n" << ex << std::cerr;
 		}
-		if (! _name.compare (name.in ())) {
-			*ptr = ana_list[i];
-			return;
-		}
 	}
+	return -EHOSTDOWN;
 }
-void lookup_digital (std::string _name, Distrio::Digital_list_var dig_list,
+
+int lookup_digital (std::string _name, Distrio::Digital_list_var dig_list,
 	Distrio::Digital **ptr)
 {
 	if (ref.init != ORB_RUNNING) {
 		std::cerr << "corba not initialized" << std::endl;
-		return;
+		return -EINVAL;
 	}
 
 	for (unsigned int i = 0; i < dig_list->length (); i++) {
 		::CORBA::String_var name;
 		Distrio::Error *e;
-
 		try {
 			e = dig_list[i]->name (name);
 			if (!::CORBA::is_nil (e))
 				free (e);
+			if (! _name.compare (name.in ())) {
+				*ptr = dig_list[i];
+				return 0;
+			}
 		} catch (::CORBA::Exception &ex) {
 			std::cerr << "get name of digital io failed\n" << ex << std::cerr;
 		}
-		if (! _name.compare (name.in ())) {
-			*ptr = dig_list[i];
-			return;
-		}
 	}
+	return -EHOSTDOWN;
 }
