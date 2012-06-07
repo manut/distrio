@@ -20,7 +20,28 @@ class My_device : public Distrio_Device_i {
 			_name = ::CORBA::string_dup (dev_name.c_str ());
 			return distrio_success ();
 		}
+		::Distrio::Error *execute (::Distrio::Dev_function &func) {
+			switch (func.id) {
+				case ::Distrio::DEV_START:
+					std::cout << "start simple_dev" << std::endl;
+					huhu_pin->set ();
+					return distrio_success ();
+				case ::Distrio::DEV_STOP:
+					std::cout << "stop simple_dev" << std::endl;
+					huhu_pin->reset ();
+					return distrio_success ();
+			}
+			return distrio_error (::Distrio::E_NOTSUPPORTED, ::Distrio::L_NORMAL,
+				dev_id, "function not implemented");
+		}
+		::Distrio::Error *functions (::Distrio::Dev_function_list_out fl) {
+			fl = new ::Distrio::Dev_function_list (function_list);
+			return distrio_success ();
+		}
+
 		::Distrio::Digital_list_var digitals;
+		::Distrio::Dev_function_list function_list;
+		::Distrio::Digital_ptr huhu_pin;
 	private:
 		std::string dev_name;
 		::CORBA::Long dev_id;
@@ -30,7 +51,6 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[])
 {
 	int ret = 0;
 	My_device *dev;
-	Distrio::Digital_ptr digital_io;
 
 	if (init_corba (argc, argv))
 		return -EINVAL;
@@ -48,19 +68,22 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[])
 	std::cout << "registered id: " << dev->id () << std::endl;
 
 	get_digital_list (&dev->digitals);
-	lookup_digital ("pin huhu", dev->digitals, &digital_io);
-
-	while (1)
-	{
-		try {
-			digital_io->set ();
-			sleep (1);
-			digital_io->reset ();
-			sleep (1);
-		} catch (::CORBA::Exception *ex) {
-			std::cerr << "sth went wrong " << ex << std::endl;
-		}
+	if (lookup_digital ("pin huhu", dev->digitals, &(dev->huhu_pin))) {
+		std::cerr << "unable to get requested io" << std::endl;
+		goto out;
 	}
+
+	dev->function_list.length (2);
+
+	dev->function_list[0].id = ::Distrio::DEV_START;
+	dev->function_list[0].description =
+		::CORBA::string_dup (std::string ("start simple dev").c_str ());
+
+	dev->function_list[1].id = ::Distrio::DEV_STOP;
+	dev->function_list[1].description =
+		::CORBA::string_dup (std::string ("stop simple dev").c_str ());
+
+	join_orb ();
 
 out:
 	free (dev);
