@@ -2,9 +2,11 @@ CC := $(CROSS_COMPILE)gcc
 CXX := $(CROSS_COMPILE)g++
 LD := $(CROSS_COMPILE)g++
 
-DISTRIO_MANAGER := ../../manager/lib
-DISTRIO_COMMON := ../../common
-DISTRIO_IO := ../../io
+DISTRIO_BASE = ../../
+
+DISTRIO_MANAGER := $(DISTRIO_BASE)manager/lib
+DISTRIO_IO := $(DISTRIO_BASE)io/lib
+DISTRIO_COMMON := $(DISTRIO_BASE)common
 
 LDFLAGS += -L$(DISTRIO_COMMON) -ldistrio_common \
 	-L$(DISTRIO_IO) -ldistrio_io \

@@ -2,8 +2,9 @@ CC := $(CROSS_COMPILE)gcc
 CXX := $(CROSS_COMPILE)g++
 LD := $(CROSS_COMPILE)g++
 
-DISTRIO_COMMON := ../../common
-DISTRIO_IO := ../../io
+DISTRIO_BASE := ../../
+DISTRIO_COMMON := $(DISTRIO_BASE)common
+DISTRIO_IO := $(DISTRIO_BASE)io/lib
 
 LDFLAGS += -L$(DISTRIO_COMMON) -ldistrio_common -L$(DISTRIO_IO) -ldistrio_io \
 	-lrt -lACE -lTAO -lTAO_AnyTypeCode -lTAO_CosNaming -lTAO_PortableServer
@@ -24,7 +25,7 @@ all: $(OBJ)
 	$(LD) $(LDFLAGS) -o $(EXEC) $(OBJ)
 
 idl:
-	$(TAO_IDL) -GI -I../../interfaces ../../interfaces/$(COMPONENT).idl
+	$(TAO_IDL) -GI -I$(DISTRIO_BASE)interfaces $(DISTRIO_BASE)interfaces/$(COMPONENT).idl
 	rm -f $(COMPONENT)I.cpp $(COMPONENT)I.h
 
 idl_clean:

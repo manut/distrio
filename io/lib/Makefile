@@ -2,7 +2,9 @@ CC := $(CROSS_COMPILE)gcc
 CXX := $(CROSS_COMPILE)g++
 LD := $(CROSS_COMPILE)g++
 
-DISTRIO_COMMON := ../common
+DISTRIO_BASE = ../../
+
+DISTRIO_COMMON := $(DISTRIO_BASE)common
 
 CFLAGS += -fPIC -I$(DISTRIO_COMMON)
 CXXFLAGS += $(CFLAGS)
@@ -23,7 +25,8 @@ all: $(OBJ)
 
 .PHONY: idl
 idl:
-	$(TAO_IDL) -GI -I../interfaces ../interfaces/$(COMPONENT).idl
+	$(TAO_IDL) -GI -I$(DISTRIO_BASE)interfaces \
+		$(DISTRIO_BASE)interfaces/$(COMPONENT).idl
 	rm -f $(COMPONENT)I.cpp
 
 .PHONY: idl_clean

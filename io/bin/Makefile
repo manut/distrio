@@ -1,4 +1,4 @@
-MAKE_DIRECTORIES = bin lib
+MAKE_DIRECTORIES = generic_gpio
 
 .PHONY: all
 idl: $(MAKE_DIRECTORIES)
