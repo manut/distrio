@@ -7,19 +7,23 @@
 
 class My_device : public Distrio_Device_i {
 	public:
-		::CORBA::Long id (void)
-		{
-			return my_id;
-		}
-		void id (::CORBA::Long id)
-		{
-			my_id = id;
-		}
+		My_device (std::string name) { dev_name = name; }
+		~My_device () { }
 
+		::CORBA::Long id (void) {
+			return dev_id;
+		}
+		void id (::CORBA::Long id) {
+			dev_id = id;
+		}
+		::Distrio::Error *name (::CORBA::String_out _name) {
+			_name = ::CORBA::string_dup (dev_name.c_str ());
+			return distrio_success ();
+		}
 		::Distrio::Digital_list_var digitals;
-
 	private:
-		::CORBA::Long my_id;
+		std::string dev_name;
+		::CORBA::Long dev_id;
 };
 
 ACE_TMAIN (int argc, ACE_TCHAR *argv[])
@@ -34,9 +38,9 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[])
 	if (run_orb ())
 		return -EINVAL;
 
-	dev = new My_device ();
+	dev = new My_device ("simple_dev");
 
-	if (register_device ("simpele device", dev)) {
+	if (register_device (dev)) {
 		ret = -EINVAL;
 		goto out;
 	}
@@ -45,8 +49,6 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[])
 
 	get_digital_list (&dev->digitals);
 	lookup_digital ("pin huhu", dev->digitals, &digital_io);
-
-	std::cout << "digital io app: " << digital_io << std::endl;
 
 	while (1)
 	{

@@ -6,6 +6,8 @@
 #include <iostream>
 #include "distrio_helper.h"
 
+static pthread_t orb_thread;
+
 int init_corba (int argc, char **argv)
 {
 	int ret = 0;
@@ -56,6 +58,35 @@ out:
 	return ret;
 }
 
+void *orb_runner (void *args)
+{
+	try {
+		ref.poa_mgr = ref.poa->the_POAManager ();
+		ref.poa_mgr->activate ();
+		ref.orb->run ();
+		ref.orb->destroy ();
+	} catch (CORBA::Exception &e) {
+		std::cerr << "run CORBA orb failed: " << e << std::endl;
+	}
+}
+
+int run_orb ()
+{
+	if (ref.init != ORB_INIT) {
+		std::cerr << "corba not initialized or orb already running" << std::endl;
+		return -1;
+	}
+
+	if (pthread_create (&orb_thread, NULL, orb_runner, NULL)) {
+		std::cerr << "create thread for corba orb failed" << std::endl;
+		return -1;
+	}
+
+	ref.init = ORB_RUNNING;
+
+	return 0;
+}
+
 int register_digital (Distrio_Digital_i *digital)
 {
 	CosNaming::Name name;
@@ -97,6 +128,107 @@ int register_digital (Distrio_Digital_i *digital)
 	return 0;
 }
 
+int register_analog (Distrio_Analog_i *analog)
+{
+	CosNaming::Name name;
+	CORBA::Object_var obj, manager_obj;
+	PortableServer::ObjectId_var oid;
+	Distrio::Analog_ptr ptr;
+	Distrio::Error *e;
+
+	if (ref.init != ORB_RUNNING) {
+		std::cerr << "corba not initialized" << std::endl;
+		return -1;
+	}
+
+	try {
+		oid = ref.poa->activate_object (analog);
+		obj = analog->_this ();
+		name.length (1);
+		e = analog->name (name[0].id);
+		free (e);
+		name[0].kind = CORBA::string_dup ("analog_io");
+		ref.nc->rebind (name, obj.in ());
+	} catch (CORBA::Exception &exc) {
+		std::cerr << "CORBA bind analog io at naming service failed: "
+			<< exc << std::endl;
+		return -1;
+	}
+
+	try {
+		ptr = Distrio::Analog::_narrow (obj);
+		e = ref.manager->register_io_analog (ptr);
+		std::cout << e->description << std::endl;
+		free (e);
+	} catch (CORBA::Exception &_e) {
+		std::cerr << "CORBA register analog io at distrio manager failed: "
+			<< _e << std::endl;
+		return -1;
+	}
+
+	return 0;
+}
+
+int register_device (Distrio_Device_i *dev)
+{
+	CosNaming::Name name;
+	CORBA::Object_var obj, manager_obj;
+	PortableServer::ObjectId_var oid;
+	Distrio::Device_ptr ptr;
+	Distrio::Error *e;
+
+	if (ref.init != ORB_RUNNING) {
+		std::cerr << "corba not initialized" << std::endl;
+		return -1;
+	}
+
+	try {
+		oid = ref.poa->activate_object (dev);
+		obj = dev->_this ();
+		name.length (1);
+		e = dev->name (name[0].id);
+		free (e);
+		name[0].kind = CORBA::string_dup ("devices");
+		ref.nc->rebind (name, obj.in ());
+	} catch (CORBA::Exception &e) {
+		std::cerr << "CORBA bind device at naming service failed: "
+			<< e << std::endl;
+		return -1;
+	}
+
+	try {
+		ptr = Distrio::Device::_narrow (obj);
+		e = ref.manager->register_io_device (ptr);
+		std::cout << e->description << std::endl;
+		free (e);
+	} catch (CORBA::Exception &_e) {
+		std::cerr << "CORBA register device at distrio manager failed: "
+			<< _e << std::endl;
+		return -1;
+	}
+
+	return 0;
+}
+
+void get_analog_list (Distrio::Analog_list_var *ana_list)
+{
+	CORBA::Object_var obj;
+	Distrio::Error *e;
+
+	if (ref.init != ORB_RUNNING) {
+		std::cerr << "corba not initialized" << std::endl;
+		return;
+	}
+
+	try {
+		e = ref.manager->analog (*ana_list);
+		free (e);
+	} catch (CORBA::Exception &_e) {
+		std::cerr << "CORBA get digital list failed: "
+			<< _e << std::endl;
+	}
+}
+
 void get_digital_list (Distrio::Digital_list_var *dig_list)
 {
 	CORBA::Object_var obj;
@@ -116,6 +248,27 @@ void get_digital_list (Distrio::Digital_list_var *dig_list)
 	}
 }
 
+void lookup_analog (std::string _name, Distrio::Analog_list_var ana_list,
+	Distrio::Analog **ptr)
+{
+	if (ref.init != ORB_RUNNING) {
+		std::cerr << "corba not initialized" << std::endl;
+		return;
+	}
+
+	for (unsigned int i = 0; i < ana_list->length (); i++) {
+		::CORBA::String_var name;
+		Distrio::Error *e;
+
+		e = ana_list[i]->name (name);
+		free (e);
+
+		if (! _name.compare (name.in ())) {
+			*ptr = ana_list[i];
+			return;
+		}
+	}
+}
 void lookup_digital (std::string _name, Distrio::Digital_list_var dig_list,
 	Distrio::Digital **ptr)
 {
@@ -133,80 +286,7 @@ void lookup_digital (std::string _name, Distrio::Digital_list_var dig_list,
 
 		if (! _name.compare (name.in ())) {
 			*ptr = dig_list[i];
-			(*ptr)->reset ();
-			std::cout << "yeah: " << *ptr << std::endl;
 			return;
 		}
 	}
-}
-
-int register_device (std::string _name, Distrio_Device_i *dev)
-{
-	CosNaming::Name name;
-	CORBA::Object_var obj, manager_obj;
-	PortableServer::ObjectId_var oid;
-	Distrio::Device_ptr ptr;
-	Distrio::Error *e;
-
-	if (ref.init != ORB_RUNNING) {
-		std::cerr << "corba not initialized" << std::endl;
-		return -1;
-	}
-
-	try {
-		oid = ref.poa->activate_object (dev);
-		obj = dev->_this ();
-		name.length (1);
-		name[0].id = CORBA::string_dup (_name.c_str ());
-		name[0].kind = CORBA::string_dup ("devices");
-		ref.nc->rebind (name, obj.in ());
-	} catch (CORBA::Exception &e) {
-		std::cerr << "CORBA bind digital io at naming service failed: "
-			<< e << std::endl;
-		return -1;
-	}
-
-	try {
-		ptr = Distrio::Device::_narrow (obj);
-		e = ref.manager->register_io_device (ptr);
-		std::cout << e->description << std::endl;
-		free (e);
-	} catch (CORBA::Exception &_e) {
-		std::cerr << "CORBA register device at distrio manager failed: "
-			<< _e << std::endl;
-		return -1;
-	}
-
-	return 0;
-}
-
-pthread_t orb_thread;
-
-void *orb_runner (void *args)
-{
-	try {
-		ref.poa_mgr = ref.poa->the_POAManager ();
-		ref.poa_mgr->activate ();
-		ref.orb->run ();
-		ref.orb->destroy ();
-	} catch (CORBA::Exception &e) {
-		std::cerr << "run CORBA orb failed: " << e << std::endl;
-	}
-}
-
-int run_orb ()
-{
-	if (ref.init != ORB_INIT) {
-		std::cerr << "corba not initialized or orb already running" << std::endl;
-		return -1;
-	}
-
-	if (pthread_create (&orb_thread, NULL, orb_runner, NULL)) {
-		std::cerr << "create thread for corba orb failed" << std::endl;
-		return -1;
-	}
-
-	ref.init = ORB_RUNNING;
-
-	return 0;
 }

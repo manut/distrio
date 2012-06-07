@@ -41,13 +41,24 @@ static corba_ref ref = {
 
 /** initialize corba orb - argc, argv as passed to main() */
 int init_corba (int argc, char **argv);
+/** run the orb - function starts orb in new thread and returns */
+int run_orb (void);
+
 /** register a digital io with a common name at the naming service */
 int register_digital (Distrio_Digital_i *digital);
-/** lookup a digital io by a common name at the manager */
+/** register a analog io with a common name at the naming service */
+int register_analog (Distrio_Analog_i *analog);
+/** register a device with a common name at the naming service */
+int register_device (Distrio_Device_i *dev);
+
+/* returns a list of all registered digital ios */
 void get_digital_list (Distrio::Digital_list_var *dig_list);
+/* returns a list of all registered analog ios */
+void get_analog_list (Distrio::Analog_list_var *ana_list);
+
+/** lookup a digital io by a common name at the manager */
 void lookup_digital (std::string _name, Distrio::Digital_list_var dig_list,
 	Distrio::Digital **ptr);
-/** register a device with a common name at the naming service */
-int register_device (std::string _name, Distrio_Device_i *dev);
-/** run the orb - function blocks until orb shutdown */
-int run_orb (void);
+/** lookup a analog io by a common name at the manager */
+void lookup_analog (std::string _name, Distrio::Analog_list_var ana_list,
+	Distrio::Analog **ptr);
