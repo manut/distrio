@@ -29,26 +29,21 @@ Distrio_Manager_i::~Distrio_Manager_i (void)
 ::Distrio::Error * Distrio_Manager_i::digital (
   ::Distrio::Digital_list_out io_list)
 {
-	io_list = new ::Distrio::Digital_list ();
-	io_list->length (digital_list.length ());
-
-	for (unsigned int i = 0; i < digital_list.length (); i++)
-		io_list[i] = digital_list[i];
-
+	io_list = new ::Distrio::Digital_list (digital_list);
 	return distrio_success ();
 }
 
 ::Distrio::Error * Distrio_Manager_i::analog (
   ::Distrio::Analog_list_out io_list)
 {
-	io_list = &analog_list;
+	io_list = new ::Distrio::Analog_list (analog_list);
 	return distrio_success ();
 }
 
 ::Distrio::Error * Distrio_Manager_i::device (
   ::Distrio::Device_list_out dev_list)
 {
-	dev_list = &device_list;
+	dev_list = new ::Distrio::Device_list (device_list);
 	return distrio_success ();
 }
 
