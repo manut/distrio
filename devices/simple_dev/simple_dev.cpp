@@ -15,6 +15,9 @@ class My_device : public Distrio_Device_i {
 		{
 			my_id = id;
 		}
+
+		::Distrio::Digital_list_var digitals;
+
 	private:
 		::CORBA::Long my_id;
 };
@@ -40,7 +43,22 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[])
 
 	std::cout << "registered id: " << dev->id () << std::endl;
 
-	digital_io = lookup_digital ("pin huhu");
+	get_digital_list (&dev->digitals);
+	lookup_digital ("pin huhu", dev->digitals, &digital_io);
+
+	std::cout << "digital io app: " << digital_io << std::endl;
+
+	while (1)
+	{
+		try {
+			digital_io->set ();
+			sleep (1);
+			digital_io->reset ();
+			sleep (1);
+		} catch (::CORBA::Exception *ex) {
+			std::cerr << "sth went wrong " << ex << std::endl;
+		}
+	}
 
 out:
 	free (dev);

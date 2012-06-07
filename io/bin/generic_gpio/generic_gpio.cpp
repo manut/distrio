@@ -30,7 +30,16 @@ class My_digital : public Distrio_Digital_i {
 
 		::Distrio::Error *name (::CORBA::String_out _name) {
 			_name = CORBA::string_dup (my_name.c_str ());
-			std::cout << "name: " << my_name << std::endl;
+			return distrio_success ();
+		}
+
+		::Distrio::Error *set () {
+			std::cout << "set" << std::endl;
+			return distrio_success ();
+		}
+
+		::Distrio::Error *reset () {
+			std::cout << "reset" << std::endl;
 			return distrio_success ();
 		}
 

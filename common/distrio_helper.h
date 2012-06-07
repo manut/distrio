@@ -44,7 +44,9 @@ int init_corba (int argc, char **argv);
 /** register a digital io with a common name at the naming service */
 int register_digital (Distrio_Digital_i *digital);
 /** lookup a digital io by a common name at the manager */
-Distrio::Digital_ptr lookup_digital (std::string _name);
+void get_digital_list (Distrio::Digital_list_var *dig_list);
+void lookup_digital (std::string _name, Distrio::Digital_list_var dig_list,
+	Distrio::Digital **ptr);
 /** register a device with a common name at the naming service */
 int register_device (std::string _name, Distrio_Device_i *dev);
 /** run the orb - function blocks until orb shutdown */
