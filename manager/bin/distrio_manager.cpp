@@ -57,7 +57,7 @@ Distrio_Manager_i::~Distrio_Manager_i (void)
 	try {
 		dig = Distrio::Digital::_narrow (io_digi);
 		dig->id (new_id ());
-	} catch (::CORBA::Exception *exc) {
+	} catch (::CORBA::Exception &exc) {
 		std::cerr << "register digital io failed" << std::endl;
 	}
 	digital_list.length (digital_list.length () + 1);
@@ -74,7 +74,7 @@ Distrio_Manager_i::~Distrio_Manager_i (void)
 	try {
 		analog = Distrio::Analog::_narrow (io_ana);
 		analog->id (new_id ());
-	} catch (::CORBA::Exception *exc) {
+	} catch (::CORBA::Exception &exc) {
 		std::cerr << "register analog io failed" << std::endl;
 	}
 	analog_list.length (analog_list.length () + 1);
@@ -91,7 +91,7 @@ Distrio_Manager_i::~Distrio_Manager_i (void)
 	try {
 		dev = Distrio::Device::_narrow (io_dev);
 		dev->id (new_id ());
-	} catch (::CORBA::Exception *exc) {
+	} catch (::CORBA::Exception &exc) {
 		std::cerr << "register device failed" << std::endl;
 	}
 	device_list.length (device_list.length () + 1);
