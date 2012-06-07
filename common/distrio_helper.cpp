@@ -87,6 +87,16 @@ int run_orb ()
 	return 0;
 }
 
+int join_orb ()
+{
+	if (ref.init != ORB_RUNNING) {
+		std::cerr << "corba orb not running" << std::endl;
+		return -1;
+	}
+
+	return pthread_join (orb_thread, NULL);
+}
+
 int register_digital (Distrio_Digital_i *digital)
 {
 	CosNaming::Name name;
@@ -260,9 +270,13 @@ void lookup_analog (std::string _name, Distrio::Analog_list_var ana_list,
 		::CORBA::String_var name;
 		Distrio::Error *e;
 
-		e = ana_list[i]->name (name);
-		free (e);
-
+		try {
+			e = ana_list[i]->name (name);
+			if (!::CORBA::is_nil (e))
+				free (e);
+		} catch (::CORBA::Exception &ex) {
+			std::cerr << "get name of analog io failed\n" << ex << std::cerr;
+		}
 		if (! _name.compare (name.in ())) {
 			*ptr = ana_list[i];
 			return;
@@ -281,9 +295,13 @@ void lookup_digital (std::string _name, Distrio::Digital_list_var dig_list,
 		::CORBA::String_var name;
 		Distrio::Error *e;
 
-		e = dig_list[i]->name (name);
-		free (e);
-
+		try {
+			e = dig_list[i]->name (name);
+			if (!::CORBA::is_nil (e))
+				free (e);
+		} catch (::CORBA::Exception &ex) {
+			std::cerr << "get name of digital io failed\n" << ex << std::cerr;
+		}
 		if (! _name.compare (name.in ())) {
 			*ptr = dig_list[i];
 			return;

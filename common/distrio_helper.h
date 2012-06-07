@@ -43,6 +43,8 @@ static corba_ref ref = {
 int init_corba (int argc, char **argv);
 /** run the orb - function starts orb in new thread and returns */
 int run_orb (void);
+/** join the orb - function blocks until orb is shutdown */
+int join_orb (void);
 
 /** register a digital io with a common name at the naming service */
 int register_digital (Distrio_Digital_i *digital);
