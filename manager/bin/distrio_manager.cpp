@@ -29,6 +29,7 @@ Distrio_Manager_i::~Distrio_Manager_i (void)
 ::Distrio::Error * Distrio_Manager_i::digital (
   ::Distrio::Digital_list_out io_list)
 {
+	io_list = new ::Distrio::Digital_list ();
 	io_list->length (digital_list.length ());
 
 	for (unsigned int i = 0; i < digital_list.length (); i++)

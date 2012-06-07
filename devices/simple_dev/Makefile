@@ -12,7 +12,7 @@ LDFLAGS += -L$(DISTRIO_COMMON) -ldistrio_common \
 	-L$(DISTRIO_IO) -ldistrio_io \
 	-L$(DISTRIO_MANAGER) -ldistrio_manager \
 	-lrt -lACE -lTAO -lTAO_AnyTypeCode -lTAO_CosNaming -lTAO_PortableServer
-CFLAGS += -fPIC -I$(DISTRIO_COMMON) -I$(DISTRIO_IO) -I$(DISTRIO_MANAGER)
+CFLAGS += -g -fPIC -I$(DISTRIO_COMMON) -I$(DISTRIO_IO) -I$(DISTRIO_MANAGER)
 CXXFLAGS += $(CFLAGS)
 
 DESTDIR := /usr

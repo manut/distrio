@@ -19,7 +19,7 @@ class My_device : public Distrio_Device_i {
 		::CORBA::Long my_id;
 };
 
-int main (int argc, char **argv)
+ACE_TMAIN (int argc, ACE_TCHAR *argv[])
 {
 	int ret = 0;
 	My_device *dev;

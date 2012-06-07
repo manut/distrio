@@ -7,8 +7,9 @@ DISTRIO_BASE = ../
 DISTRIO_IO = $(DISTRIO_BASE)io/lib
 DISTRIO_MANAGER = $(DISTRIO_BASE)manager/lib
 
-CFLAGS += -fPIC -I. -I$(DISTRIO_IO) -I$(DISTRIO_MANAGER)
+CFLAGS += -g -fPIC -I. -I$(DISTRIO_IO) -I$(DISTRIO_MANAGER)
 CXXFLAGS += $(CFLAGS)
+LDFLAGS += -lrt
 
 TAO_IDL := tao_idl
 
@@ -22,7 +23,7 @@ IDL_CLEANFILES = $(COMPONENT)C.cpp $(COMPONENT)C.inl $(COMPONENT)I.h \
 	$(COMPONENT)S.h $(COMPONENT)C.h $(COMPONENT)S.cpp
 
 all: $(OBJ)
-	$(LD) -shared -o $(LIB) $(OBJ)
+	$(LD) $(LDFLAGS) -shared -o $(LIB) $(OBJ)
 
 .PHONY: idl
 idl:

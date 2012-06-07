@@ -56,7 +56,7 @@ out:
 	return ret;
 }
 
-int register_digital (std::string _name, Distrio_Digital_i *digital)
+int register_digital (Distrio_Digital_i *digital)
 {
 	CosNaming::Name name;
 	CORBA::Object_var obj, manager_obj;
@@ -73,12 +73,13 @@ int register_digital (std::string _name, Distrio_Digital_i *digital)
 		oid = ref.poa->activate_object (digital);
 		obj = digital->_this ();
 		name.length (1);
-		name[0].id = CORBA::string_dup (_name.c_str ());
+		e = digital->name (name[0].id);
+		free (e);
 		name[0].kind = CORBA::string_dup ("digital_io");
 		ref.nc->rebind (name, obj.in ());
-	} catch (CORBA::Exception &e) {
+	} catch (CORBA::Exception &exc) {
 		std::cerr << "CORBA bind digital io at naming service failed: "
-			<< e << std::endl;
+			<< exc << std::endl;
 		return -1;
 	}
 
@@ -120,9 +121,11 @@ Distrio::Digital_ptr lookup_digital (std::string _name)
 	for (unsigned int i = 0; i < dig_list->length (); i++) {
 		::CORBA::String_var name;
 		Distrio::Error *e;
+
 		e = dig_list[i]->name (name);
 		free (e);
-		if (! _name.compare (name)) {
+
+		if (! _name.compare (name.in ())) {
 			Distrio::Digital_ptr ptr = dig_list[i];
 			return ptr;
 		}
