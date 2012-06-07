@@ -15,7 +15,7 @@ class Io_manager : public  ACE_Task < ACE_MT_SYNCH > {
 	private:
 		int svc (void) {
 			while (1) {
-				std::cout << "check inputs" << std::endl;
+				/** TODO: implement some cyclic gpio stuff */
 				sleep (1);
 			}
 		}
@@ -54,7 +54,7 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[])
 {
 	int ret = 0;
 	My_digital *digital;
-	Io_manager manager;
+	/* Io_manager manager; */
 
 	if (init_corba (argc, argv))
 		return -EINVAL;
@@ -71,8 +71,12 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[])
 
 	std::cout << "registered id: " << digital->id () << std::endl;
 
+	/* TODO: activate if cyclic stuff is needed
 	manager.activate ();
 	manager.wait ();
+	*/
+
+	join_orb ();
 
 out:
 	free (digital);
