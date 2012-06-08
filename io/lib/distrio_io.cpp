@@ -35,11 +35,13 @@
 Distrio_Digital_i::Distrio_Digital_i (std::string _name)
 {
 	io_name = _name;
+	val = -1;
 }
 
 // Implementation skeleton constructor
 Distrio_Digital_i::Distrio_Digital_i (void)
 {
+	val = -1;
 }
 
 // Implementation skeleton destructor
@@ -54,41 +56,85 @@ Distrio_Digital_i::~Distrio_Digital_i (void)
   return distrio_success ();
 }
 
-::Distrio::Error * Distrio_Digital_i::set (
-  void)
-{
-  // Add your implementation here
+::Distrio::Error * Distrio_Digital_i::set () {
+	return distrio_error (Distrio::E_NOTSUPPORTED, Distrio::L_NORMAL, io_id,
+		"set digital io not implemented");
 }
 
-::Distrio::Error * Distrio_Digital_i::reset (
-  void)
-{
-  // Add your implementation here
+::Distrio::Error * Distrio_Digital_i::reset () {
+	return distrio_error (Distrio::E_NOTSUPPORTED, Distrio::L_NORMAL, io_id,
+		"reset digital io not implemented");
 }
 
-::Distrio::Error * Distrio_Digital_i::get (
-  ::CORBA::Long_out value)
-{
-  // Add your implementation here
+::Distrio::Error * Distrio_Digital_i::get (::CORBA::Long_out value) {
+	return distrio_error (Distrio::E_NOTSUPPORTED, Distrio::L_NORMAL, io_id,
+		"get digital io not implemented");
 }
 
+#include <iostream>
+/** TODO: think about locking */
 ::Distrio::Error * Distrio_Digital_i::register_callback (
   ::Distrio::Device_ptr dev,
   ::Distrio::Digital_trigger trigger)
 {
-  // Add your implementation here
+	std::cout << __func__ << std::endl;
+	switch (trigger) {
+		case Distrio::TRIGGER_VALUE:
+			cb_list_fall.push_back (dev);
+			cb_list_rise.push_back (dev);
+			break;
+		case Distrio::TRIGGER_RISING_EDGE:
+			cb_list_rise.push_back (dev);
+			break;
+		case Distrio::TRIGGER_FALLING_EDGE:
+			cb_list_fall.push_back (dev);
+			break;
+		default:
+			return distrio_error
+				(Distrio::E_INVAL,
+				 Distrio::L_NORMAL,
+				 dev->id (),
+				 "register_callback with unknown type");
+	};
+	return distrio_success ();
+}
+
+/** TODO: think about locking */
+void Distrio_Digital_i::raise () {
+	val = 1;
+	for (std::list <Distrio::Device_ptr> :: iterator it = cb_list_rise.begin ();
+			 it != cb_list_rise.end ();
+			 it++)
+		(*it)->callback_digital ((::Distrio::Digital_ptr) this);
+}
+
+/** TODO: think about locking */
+void Distrio_Digital_i::fall () {
+	val = 0;
+	for (std::list <Distrio::Device_ptr> :: iterator it = cb_list_fall.begin ();
+			 it != cb_list_fall.end ();
+			 it++)
+		(*it)->callback_digital ((::Distrio::Digital_ptr) this);
+}
+
+void Distrio_Digital_i::update_timestamp () {
+	struct timespec _ts;
+
+	clock_gettime (CLOCK_REALTIME, &_ts);
+	ts.seconds = _ts.tv_sec;
+	ts.nanoseconds = _ts.tv_nsec;
 }
 
 ::Distrio::Timestamp Distrio_Digital_i::last_update (
   void)
 {
-  // Add your implementation here
+	return ts;
 }
 
 void Distrio_Digital_i::last_update (
   const ::Distrio::Timestamp & last_update)
 {
-  // Add your implementation here
+	ts = last_update;
 }
 
 ::CORBA::Long Distrio_Digital_i::id (
@@ -127,25 +173,32 @@ Distrio_Analog_i::~Distrio_Analog_i (void)
 ::Distrio::Error * Distrio_Analog_i::min (
   ::CORBA::Long_out min)
 {
-  // Add your implementation here
+	return distrio_error (Distrio::E_NOTSUPPORTED, Distrio::L_NORMAL, io_id,
+		std::string (__func__) + std::string (" not implemented"));
 }
 
 ::Distrio::Error * Distrio_Analog_i::max (
   ::CORBA::Long_out max)
 {
   // Add your implementation here
+	return distrio_error (Distrio::E_NOTSUPPORTED, Distrio::L_NORMAL, io_id,
+		std::string (__func__) + std::string (" not implemented"));
 }
 
 ::Distrio::Error * Distrio_Analog_i::set (
   ::CORBA::Long value)
 {
   // Add your implementation here
+	return distrio_error (Distrio::E_NOTSUPPORTED, Distrio::L_NORMAL, io_id,
+		std::string (__func__) + std::string (" not implemented"));
 }
 
 ::Distrio::Error * Distrio_Analog_i::get (
   ::CORBA::Long_out value)
 {
   // Add your implementation here
+	return distrio_error (Distrio::E_NOTSUPPORTED, Distrio::L_NORMAL, io_id,
+		std::string (__func__) + std::string (" not implemented"));
 }
 
 ::Distrio::Error * Distrio_Analog_i::register_callback (
@@ -153,6 +206,8 @@ Distrio_Analog_i::~Distrio_Analog_i (void)
   const ::Distrio::Analog_trigger & trigger)
 {
   // Add your implementation here
+	return distrio_error (Distrio::E_NOTSUPPORTED, Distrio::L_NORMAL, io_id,
+		std::string (__func__) + std::string (" not implemented"));
 }
 
 ::Distrio::Timestamp Distrio_Analog_i::last_update (
@@ -193,41 +248,51 @@ Distrio_Device_i::~Distrio_Device_i (void)
   ::CORBA::String_out name)
 {
   // Add your implementation here
+	return distrio_error (Distrio::E_NOTSUPPORTED, Distrio::L_NORMAL, dev_id,
+		std::string (__func__) + std::string (" not implemented"));
 }
 
 ::Distrio::Error * Distrio_Device_i::execute (
   const ::Distrio::Dev_function & func)
 {
   // Add your implementation here
+	return distrio_error (Distrio::E_NOTSUPPORTED, Distrio::L_NORMAL, dev_id,
+		std::string (__func__) + std::string (" not implemented"));
 }
 
 ::Distrio::Error * Distrio_Device_i::functions (
   ::Distrio::Dev_function_list_out funcs)
 {
   // Add your implementation here
+	return distrio_error (Distrio::E_NOTSUPPORTED, Distrio::L_NORMAL, dev_id,
+		std::string (__func__) + std::string (" not implemented"));
 }
 
 ::Distrio::Error * Distrio_Device_i::callback_digital (
   ::Distrio::Digital_ptr io_dig)
 {
   // Add your implementation here
+	return distrio_error (Distrio::E_NOTSUPPORTED, Distrio::L_NORMAL, dev_id,
+		std::string (__func__) + std::string (" not implemented"));
 }
 
 ::Distrio::Error * Distrio_Device_i::callback_analog (
   ::Distrio::Analog_ptr io_ana)
 {
   // Add your implementation here
+	return distrio_error (Distrio::E_NOTSUPPORTED, Distrio::L_NORMAL, dev_id,
+		std::string (__func__) + std::string (" not implemented"));
 }
 
 ::CORBA::Long Distrio_Device_i::id (
   void)
 {
-  // Add your implementation here
+	return dev_id;
 }
 
 void Distrio_Device_i::id (
-  ::CORBA::Long id)
+  ::CORBA::Long _id)
 {
-  // Add your implementation here
+	_id = dev_id;
 }
 

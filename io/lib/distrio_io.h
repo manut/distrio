@@ -33,6 +33,8 @@
 
 #include "distrio_ioS.h"
 
+#include <list>
+
 #if !defined (ACE_LACKS_PRAGMA_ONCE)
 #pragma once
 #endif /* ACE_LACKS_PRAGMA_ONCE */
@@ -85,9 +87,21 @@ public:
   void id (
     ::CORBA::Long id);
 
+  void raise (void);
+
+  void fall (void);
+
+  void update_timestamp (void);
+
+protected:
+  ::CORBA::Long val;
+
 private:
   std::string io_name;
   ::CORBA::Long io_id;
+  std::list<Distrio::Device_ptr> cb_list_rise;
+  std::list<Distrio::Device_ptr> cb_list_fall;
+  ::Distrio::Timestamp ts;
 };
 
 class  Distrio_Analog_i
@@ -183,6 +197,9 @@ public:
   virtual
   void id (
     ::CORBA::Long id);
+
+private:
+    ::CORBA::Long dev_id;
 };
 
 
