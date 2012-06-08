@@ -1,7 +1,7 @@
 #include <distrio_helper.h>
 #include <distrio_error.h>
 
-#include <distrio_ioI.h>
+#include <distrio_io.h>
 
 #include <ace/Task.h>
 
@@ -23,15 +23,7 @@ class Io_manager : public  ACE_Task < ACE_MT_SYNCH > {
 
 class My_digital : public Distrio_Digital_i {
 	public:
-		My_digital (std::string _name) { my_name = _name; }
-		~My_digital () { };
-
-		::CORBA::Long id (void) { return my_id; }
-
-		::Distrio::Error *name (::CORBA::String_out _name) {
-			_name = CORBA::string_dup (my_name.c_str ());
-			return distrio_success ();
-		}
+		My_digital (std::string io_name) : Distrio_Digital_i (io_name) { }
 
 		::Distrio::Error *set () {
 			std::cout << "set" << std::endl;
@@ -42,12 +34,6 @@ class My_digital : public Distrio_Digital_i {
 			std::cout << "reset" << std::endl;
 			return distrio_success ();
 		}
-
-		void id (::CORBA::Long id) { my_id = id; }
-
-	private:
-		std::string my_name;
-		::CORBA::Long my_id;
 };
 
 ACE_TMAIN (int argc, ACE_TCHAR *argv[])
