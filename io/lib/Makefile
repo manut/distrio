@@ -27,7 +27,7 @@ all: $(OBJ)
 idl:
 	$(TAO_IDL) -GI -I$(DISTRIO_BASE)interfaces \
 		$(DISTRIO_BASE)interfaces/$(COMPONENT).idl
-	rm -f $(COMPONENT)I.cpp
+	rm -f $(COMPONENT)I.*
 
 .PHONY: idl_clean
 idl_clean:

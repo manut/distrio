@@ -28,7 +28,14 @@
 // TAO_IDL - Generated from
 // be/be_codegen.cpp:1673
 
-#include "distrio_ioI.h"
+#include "distrio_io.h"
+
+#include <distrio_error.h>
+
+Distrio_Digital_i::Distrio_Digital_i (std::string _name)
+{
+	io_name = _name;
+}
 
 // Implementation skeleton constructor
 Distrio_Digital_i::Distrio_Digital_i (void)
@@ -41,9 +48,10 @@ Distrio_Digital_i::~Distrio_Digital_i (void)
 }
 
 ::Distrio::Error * Distrio_Digital_i::name (
-  ::CORBA::String_out name)
+  ::CORBA::String_out _name)
 {
-  // Add your implementation here
+  _name = CORBA::string_dup (io_name.c_str ());
+  return distrio_success ();
 }
 
 ::Distrio::Error * Distrio_Digital_i::set (
@@ -86,15 +94,19 @@ void Distrio_Digital_i::last_update (
 ::CORBA::Long Distrio_Digital_i::id (
   void)
 {
-  // Add your implementation here
+	return io_id;
 }
 
 void Distrio_Digital_i::id (
-  ::CORBA::Long id)
+  ::CORBA::Long _id)
 {
-  // Add your implementation here
+	io_id = _id;
 }
 
+Distrio_Analog_i::Distrio_Analog_i (std::string _name)
+{
+	io_name = _name;
+}
 // Implementation skeleton constructor
 Distrio_Analog_i::Distrio_Analog_i (void)
 {
@@ -106,9 +118,10 @@ Distrio_Analog_i::~Distrio_Analog_i (void)
 }
 
 ::Distrio::Error * Distrio_Analog_i::name (
-  ::CORBA::String_out name)
+  ::CORBA::String_out _name)
 {
-  // Add your implementation here
+  _name = CORBA::string_dup (io_name.c_str ());
+  return distrio_success ();
 }
 
 ::Distrio::Error * Distrio_Analog_i::min (
@@ -157,13 +170,13 @@ void Distrio_Analog_i::last_update (
 ::CORBA::Long Distrio_Analog_i::id (
   void)
 {
-  // Add your implementation here
+	return io_id;
 }
 
 void Distrio_Analog_i::id (
-  ::CORBA::Long id)
+  ::CORBA::Long _id)
 {
-  // Add your implementation here
+	io_id = _id;
 }
 
 // Implementation skeleton constructor
