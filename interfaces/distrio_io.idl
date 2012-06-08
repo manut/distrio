@@ -17,7 +17,7 @@ module Distrio {
 
 	/** what should trigger a callback? */
 	enum Digital_trigger {
-		TRIGGER_EDGE,
+		TRIGGER_VALUE,
 		TRIGGER_RISING_EDGE,
 		TRIGGER_FALLING_EDGE
 	};
