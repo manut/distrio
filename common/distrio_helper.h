@@ -9,7 +9,7 @@
  * @licence GPLv2
  */
 
-#include <distrio_ioI.h>
+#include <distrio_io.h>
 #include <distrio_ioC.h>
 #include <distrio_ioS.h>
 
