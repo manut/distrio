@@ -57,10 +57,14 @@ int register_device (Distrio_Device_i *dev);
 void get_digital_list (Distrio::Digital_list_var *dig_list);
 /* returns a list of all registered analog ios */
 void get_analog_list (Distrio::Analog_list_var *ana_list);
-
+/* returns a list of all registered devices */
+void get_device_list (Distrio::Device_list_var *dev_list);
 /** lookup a digital io by a common name at the manager */
 int lookup_digital (std::string _name, Distrio::Digital_list_var dig_list,
 	Distrio::Digital **ptr);
 /** lookup a analog io by a common name at the manager */
 int lookup_analog (std::string _name, Distrio::Analog_list_var ana_list,
 	Distrio::Analog **ptr);
+/** lookup a device by a common name at the manager */
+int lookup_device (std::string _name, Distrio::Device_list_var dev_list,
+  Distrio::Device **ptr);

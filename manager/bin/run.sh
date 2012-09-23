@@ -17,6 +17,6 @@ if [ -z "$NS" ]; then
 	sleep 1
 fi
 
-LD_LIBRARY_PATH=../../io/lib:../../common ./distrio_manager \
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../io/lib:../../common ./distrio_manager \
 	-ORBInitRef NameService=corbaloc:iiop:localhost:12345/NameService \
 	$@

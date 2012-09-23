@@ -1,4 +1,4 @@
-MAKE_DIRECTORIES = io/lib common manager/lib devices io/bin manager/bin
+MAKE_DIRECTORIES = io/lib common manager/lib devices io/bin manager/bin clients
 
 .PHONY: all
 idl: $(MAKE_DIRECTORIES)

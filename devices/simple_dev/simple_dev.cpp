@@ -77,13 +77,19 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[])
 		goto out;
 	}
 
+
+	dev->huhu_pin->set ();
+	sleep (1);
+	dev->huhu_pin->reset ();
+
+/*
 	try {
 		dev->huhu_pin->register_callback ( (Distrio::Device_ptr) dev,
 			Distrio::TRIGGER_FALLING_EDGE);
 	} catch (::CORBA::Exception &ex) {
 		std::cerr << "register cb failed" << std::endl;
 	}
-
+*/
 	dev->function_list.length (2);
 
 	dev->function_list[0].id = ::Distrio::DEV_START;

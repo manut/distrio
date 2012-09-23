@@ -220,6 +220,25 @@ int register_device (Distrio_Device_i *dev)
 	return 0;
 }
 
+void get_device_list (Distrio::Device_list_var *dev_list)
+{
+	CORBA::Object_var obj;
+	Distrio::Error *e;
+
+	if (ref.init != ORB_RUNNING) {
+		std::cerr << "corba not initialized" << std::endl;
+		return;
+	}
+
+	try {
+		e = ref.manager->device (*dev_list);
+		free (e);
+	} catch (CORBA::Exception &_e) {
+		std::cerr << "CORBA get digital list failed: "
+			<< _e << std::endl;
+	}
+}
+
 void get_analog_list (Distrio::Analog_list_var *ana_list)
 {
 	CORBA::Object_var obj;
@@ -305,6 +324,32 @@ int lookup_digital (std::string _name, Distrio::Digital_list_var dig_list,
 			}
 		} catch (::CORBA::Exception &ex) {
 			std::cerr << "get name of digital io failed\n" << ex << std::cerr;
+		}
+	}
+	return -EHOSTDOWN;
+}
+
+int lookup_device (std::string _name, Distrio::Device_list_var dev_list,
+	Distrio::Device **ptr)
+{
+	if (ref.init != ORB_RUNNING) {
+		std::cerr << "corba not initialized" << std::endl;
+		return -EINVAL;
+	}
+
+	for (unsigned int i = 0; i < dev_list->length (); i++) {
+		::CORBA::String_var name;
+		Distrio::Error *e;
+		try {
+			e = dev_list[i]->name (name);
+			if (!::CORBA::is_nil (e))
+				free (e);
+			if (! _name.compare (name.in ())) {
+				*ptr = dev_list[i];
+				return 0;
+			}
+		} catch (::CORBA::Exception &ex) {
+			std::cerr << "get name of device failed\n" << ex << std::cerr;
 		}
 	}
 	return -EHOSTDOWN;
