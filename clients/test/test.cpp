@@ -25,12 +25,13 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[])
 		goto out;
 	}
 
-	/* TODO: do sth */
 	dev->functions(funcs.out ());
 
 	for (unsigned int i = 0; i < funcs->length (); i++)
 	{
 		std::cout << funcs[i].description << std::endl;
+		dev->execute (funcs[i]);
+		sleep (1);
 	}
 
 	destroy_orb ();
