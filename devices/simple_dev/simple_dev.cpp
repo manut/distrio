@@ -20,7 +20,7 @@ class My_device : public Distrio_Device_i {
 			_name = ::CORBA::string_dup (dev_name.c_str ());
 			return distrio_success ();
 		}
-		::Distrio::Error *execute (::Distrio::Dev_function &func) {
+		::Distrio::Error *execute (const ::Distrio::Dev_function & func) {
 			switch (func.id) {
 				case ::Distrio::DEV_START:
 					std::cout << "start simple_dev" << std::endl;
@@ -81,7 +81,6 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[])
 	dev->huhu_pin->set ();
 	sleep (1);
 	dev->huhu_pin->reset ();
-
 /*
 	try {
 		dev->huhu_pin->register_callback ( (Distrio::Device_ptr) dev,
