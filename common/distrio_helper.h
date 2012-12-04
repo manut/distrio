@@ -45,6 +45,8 @@ int init_corba (int argc, char **argv);
 int run_orb (void);
 /** join the orb - function blocks until orb is shutdown */
 int join_orb (void);
+/** destroy the orb - behaviour of incoming calls is undefined */
+int destroy_orb (void);
 
 /** register a digital io with a common name at the naming service */
 int register_digital (Distrio_Digital_i *digital);

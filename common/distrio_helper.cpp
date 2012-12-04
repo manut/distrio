@@ -64,7 +64,6 @@ void *orb_runner (void *args)
 		ref.poa_mgr = ref.poa->the_POAManager ();
 		ref.poa_mgr->activate ();
 		ref.orb->run ();
-		ref.orb->destroy ();
 	} catch (CORBA::Exception &e) {
 		std::cerr << "run CORBA orb failed: " << e << std::endl;
 	}
@@ -87,13 +86,27 @@ int run_orb ()
 	return 0;
 }
 
-int join_orb ()
+int destroy_orb ()
 {
 	if (ref.init != ORB_RUNNING) {
-		std::cerr << "corba orb not running" << std::endl;
+		std::cerr << "corba not initialized or orb not running" << std::endl;
 		return -1;
 	}
 
+	try {
+		ref.orb->destroy ();
+		ref.init = ORB_INIT;
+	} catch (CORBA::Exception &e) {
+		std::cerr << "destroy CORBA orb failed: " << e << std::endl;
+
+		return -1;
+	}
+
+	return 0;
+}
+
+int join_orb ()
+{
 	return pthread_join (orb_thread, NULL);
 }
 
