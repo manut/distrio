@@ -33,9 +33,9 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[])
 		std::cout << funcs[i].description << std::endl;
 	}
 
+	destroy_orb ();
 	join_orb ();
 
 out:
-	free (dev);
 	return ret;
 }
