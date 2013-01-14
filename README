@@ -2,13 +2,47 @@ DISTRIO
 =======
 Manuel Traut <manut@mecka.net>
 
-distrio is a software framework to group and control digital and analog
-inputs and outputs that are distributed on different machines/boards.
+Abstract
+^^^^^^^^
+distrio is an open-source software framework that uses (Real-time) CORBA to
+group and control digital and analog inputs and outputs that are available on
+different embedded Linux boards. distrio can be used for example to control
+modelrailroads, do home-automation, or replace a SPS based system. Several
+Inputs and Outputs represent a device. A device implements control functions
+(e.g. in C). The fucntion names can be explored and called by LAN. All
+currently available functions can be called by a webinterface. It is feasable
+to implement bridges to other control standards like DLNA.
 
-The initial idea was to control turnouts / LEDs / servos of a model railroad.
-They are connected to GPIO ports of some embedded Linux boards. The Linux boards
-are connected to each other by a common (W)LAN network.
+There are generic distrio modules that use the Linux sysfs functions to export
+available LEDs and GPIOs. Also hardware development is part of the distrio
+open-source project. E.g. a lowcost I/O Expander for the Raspberry PI board.
 
+This paper describes the architecture and real-time performance of the distrio
+framework. It presents an I/O Expander for the Raspberry PI board. Also the
+real-time performance of distrio will be discussed.
+
+distrio ist ein auf (Real-time) CORBA basierendes open-source software
+Framework um digitale und analoge Ein- und Ausgaenge zu steuern, welche sich
+auf verschiedenen embedded Linux Boards befinden. distrio kann in
+Modelleisenbahnsteuerungen oder in der Heimautomatisierung eingesetzt werden.
+Es ist auch denkbar eine SPS basierte Steuerung zu ersetzen. Mehrere Ein- und
+Ausgaenge bilden ein Geraet. Ein Geraet implementiert Regelungsfunktionen.
+Diese Funktionen koennen ueber ein (W)LAN aufgerufen werden. Es gibt ein Web-
+interface ueber welches alle derzeit im Netz verfuegbaren Funktionen aufgerufen
+werden koennen. Es ist denkbar bridges zu anderen Standards wie DLNA zu
+implementieren.
+
+Generische distrio Module nutzen die Linux sysfs Funktionen um verfuegbare
+LEDs und GPIOs via distrio zugaenglich zu machen. Auch Hardware wurde im Rahmen
+des open-source Projekts distrio entwickelt. So z.b. ein lowcost I/O Expander
+fuer das Raspberry PI Board.
+
+Dieses Paper beschreibt die Architektur des distrio frameworks. Ausserdem wird
+der Raspberry I/O Expander vorgestellt und die real-time Performance von
+distrio diskutiert.
+
+Components
+^^^^^^^^^^
 There is a central component called 'Manager' running on one board. Each I/O
 pin of each board in the system is registered with a common name at the
 'Manager'. A I/O pin can either be 'Digital' or 'Analog'. All registered pins
@@ -47,3 +81,6 @@ distrio system.
 
 The 'Controller' interface is the user interface. It can for example host a
 webinterface or mobile application.
+
+Performance
+^^^^^^^^^^^
