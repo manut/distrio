@@ -44,7 +44,7 @@ class  Distrio_Digital_i
 {
 public:
   // Constructor
-  Distrio_Digital_i (std::string _name);
+  Distrio_Digital_i (std::string _name, ::Distrio::Direction _dir);
   Distrio_Digital_i (void);
 
   // Destructor
@@ -70,6 +70,10 @@ public:
   ::Distrio::Error * register_callback (
     ::Distrio::Device_ptr dev,
     ::Distrio::Digital_trigger trigger);
+
+  virtual
+  ::Distrio::Direction direction (
+    void);
 
   virtual
   ::Distrio::Timestamp last_update (
@@ -102,6 +106,7 @@ private:
   std::list<Distrio::Device_ptr> cb_list_rise;
   std::list<Distrio::Device_ptr> cb_list_fall;
   ::Distrio::Timestamp ts;
+  ::Distrio::Direction dir;
 };
 
 class  Distrio_Analog_i
@@ -109,7 +114,7 @@ class  Distrio_Analog_i
 {
 public:
   // Constructor
-  Distrio_Analog_i (std::string _name);
+  Distrio_Analog_i (std::string _name, ::Distrio::Direction _dir);
   Distrio_Analog_i (void);
 
   // Destructor
@@ -141,6 +146,10 @@ public:
     const ::Distrio::Analog_trigger & trigger);
 
   virtual
+  ::Distrio::Direction direction (
+    void);
+
+  virtual
   ::Distrio::Timestamp last_update (
     void);
 
@@ -157,6 +166,7 @@ public:
     ::CORBA::Long id);
 private:
   std::string io_name;
+  ::Distrio::Direction dir;
   ::CORBA::Long io_id;
 };
 

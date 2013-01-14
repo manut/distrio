@@ -32,9 +32,11 @@
 
 #include <distrio_error.h>
 
-Distrio_Digital_i::Distrio_Digital_i (std::string _name)
+Distrio_Digital_i::Distrio_Digital_i (std::string _name,
+	::Distrio::Direction _dir)
 {
 	io_name = _name;
+	dir = _dir;
 	val = -1;
 }
 
@@ -125,6 +127,12 @@ void Distrio_Digital_i::update_timestamp () {
 	ts.nanoseconds = _ts.tv_nsec;
 }
 
+::Distrio::Direction Distrio_Digital_i::direction (
+  void)
+{
+	return dir;
+}
+
 ::Distrio::Timestamp Distrio_Digital_i::last_update (
   void)
 {
@@ -149,10 +157,12 @@ void Distrio_Digital_i::id (
 	io_id = _id;
 }
 
-Distrio_Analog_i::Distrio_Analog_i (std::string _name)
+Distrio_Analog_i::Distrio_Analog_i (std::string _name, Distrio::Direction _dir)
 {
+	dir = _dir;
 	io_name = _name;
 }
+
 // Implementation skeleton constructor
 Distrio_Analog_i::Distrio_Analog_i (void)
 {
@@ -220,6 +230,12 @@ void Distrio_Analog_i::last_update (
   const ::Distrio::Timestamp & last_update)
 {
   // Add your implementation here
+}
+
+::Distrio::Direction Distrio_Analog_i::direction (
+  void)
+{
+	return dir;
 }
 
 ::CORBA::Long Distrio_Analog_i::id (

@@ -22,6 +22,11 @@ module Distrio {
 		TRIGGER_FALLING_EDGE
 	};
 
+	enum Direction {
+		INPUT,
+		OUTPUT
+	};
+
 	/** a digital input or output pin */
 	interface Digital {
 		/** get the name of the hardware which is connected to this pin */
@@ -34,6 +39,8 @@ module Distrio {
 		Distrio::Error get (out long value);
 		/** register a callback that is called if the state of the pin changes */
 		Distrio::Error register_callback (in Device dev, in Digital_trigger trigger);
+		/** returns direction of digital IO */
+		Distrio::Direction direction ();
 		/** stores a timestamp of the last update of the referenced value */
 		attribute Distrio::Timestamp last_update;
 		/** the id is given by Distrio::Manager during registration */
@@ -64,6 +71,8 @@ module Distrio {
 		Distrio::Error get (out long value);
 		/** register a callback that is called if the trigger matches */
 		Distrio::Error register_callback (in Device dev, in Analog_trigger trigger);
+		/** returns direction of analog IO */
+		Distrio::Direction direction ();
 		/** stores a timestamp of the last update of the referenced value */
 		attribute Distrio::Timestamp last_update;
 		/** the id is given by Distrio::Manager during registration */
