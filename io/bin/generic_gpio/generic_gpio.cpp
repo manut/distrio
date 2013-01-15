@@ -18,13 +18,13 @@ static void err (const char *s)
 
 class GPIO : public Distrio_Digital_i {
 	public:
-		GPIO (std::string io_name, int value, ::Distrio::Direction dir) :
-			Distrio_Digital_i (io_name, dir) {
+		GPIO (int _id, std::string name, ::Distrio::Direction dir) :
+			Distrio_Digital_i (name, dir) {
 				int ret = -1;
 				if (dir == ::Distrio::OUTPUT)
-					ret = gpio_open_dir (&p, value, GPIO_OUT);
+					ret = gpio_open_dir (&p, _id, GPIO_OUT);
 				if (dir == ::Distrio::INPUT)
-					ret = gpio_open_dir (&p, value, GPIO_IN);
+					ret = gpio_open_dir (&p, _id, GPIO_IN);
 				if (ret) {
 					id(-1);
 					err ("open gpio failed\n");
@@ -93,16 +93,22 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[])
 
 	for (i = 0; i < num; i++) {
 		::Distrio::Direction dir;
+		char tmp [255];
 		char *name = _iniparser_getsecname (d, i);
-		char *direction = _iniparser_getstring (d, "direction", "unknown");
-		int value = _iniparser_getint (d, "value", -1);
+		int id;
+		char *direction;
+		sprintf (tmp, "%s:id", name);
+		id = _iniparser_getint (d, tmp, -1);
+		sprintf (tmp, "%s:direction", name);
+		direction = _iniparser_getstring (d, tmp, "unknown");
 
 		if (strcmp (direction, "in") == 0)
 			dir = ::Distrio::INPUT;
 		else
 			dir = ::Distrio::OUTPUT;
 
-		GPIO *g = new GPIO (std::string (name), value, dir);
+		std::cout << " new gpio: " << id << ": " << name << std::endl;
+		GPIO *g = new GPIO (id, std::string (name), dir);
 
 		if (g->id () == -1) {
 			err ("create gpio object failed - hw error?\n");
