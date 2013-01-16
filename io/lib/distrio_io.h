@@ -99,9 +99,9 @@ public:
 
 protected:
   ::CORBA::Long val;
+  std::string io_name;
 
 private:
-  std::string io_name;
   ::CORBA::Long io_id;
   std::list<Distrio::Device_ptr> cb_list_rise;
   std::list<Distrio::Device_ptr> cb_list_fall;
@@ -164,8 +164,9 @@ public:
   virtual
   void id (
     ::CORBA::Long id);
-private:
+protected:
   std::string io_name;
+private:
   ::Distrio::Direction dir;
   ::CORBA::Long io_id;
 };
