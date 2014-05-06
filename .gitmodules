@@ -7,3 +7,6 @@
 [submodule "deps/TAO"]
 	path = deps/TAO
 	url = git://gitorious.org/doc/tao.git
+[submodule "deps/iniparser"]
+	path = deps/iniparser
+	url = http://github.com/ndevilla/iniparser

@@ -11,3 +11,4 @@ doc/html
 manager/bin/distrio_manager
 io/bin/generic_gpio/distrio_generic_gpio
 devices/simple_dev/distrio_simple_dev
+deps/*
