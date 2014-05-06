@@ -8,6 +8,7 @@ DISTRIO_BASE = ../../../
 DISTRIO_COMMON := $(DISTRIO_BASE)common
 DISTRIO_MANAGER := $(DISTRIO_BASE)manager/lib
 DISTRIO_IO := $(DISTRIO_BASE)io/lib
+INIPARSER := $(DISTRIO_BASE)/deps/iniparser
 
 LDFLAGS += -L$(DISTRIO_COMMON) -ldistrio_common \
 	-L$(DISTRIO_IO) -ldistrio_io \
@@ -17,7 +18,8 @@ LDFLAGS += -L$(DISTRIO_COMMON) -ldistrio_common \
 	-L. -lini \
 	-lrt
 CFLAGS += -fPIC -I$(DISTRIO_COMMON) -I$(DISTRIO_IO) -I$(DISTRIO_MANAGER) \
-	`pkg-config --cflags libgpio`
+	`pkg-config --cflags libgpio` \
+	-I$(INIPARSER)/src
 
 CXXFLAGS += $(CFLAGS)
 
@@ -28,7 +30,7 @@ EXEC = $(COMPONENT)
 OBJ = generic_gpio.o
 
 all: $(OBJ)
-	$(CC) --shared -o libini.so -fPIC ini.c -liniparser
+	$(CC) $(CFLAGS) --shared -o libini.so -fPIC ini.c -L$(INIPARSER) -liniparser
 	$(LD) $(LDFLAGS) -o $(EXEC) $(OBJ)
 
 clean:
